@@ -1,18 +1,17 @@
 using System.Net;
 using System.Net.Sockets;
-using System.Security.Cryptography;
+using Spartan.Utils.Cryptography;
 
 namespace Spartan.Server;
 
 public class SocketServer : IDisposable
 {
-    private readonly TcpListener _tcpListener;
-    private readonly TcpClient _tcpClient;
-    
     private readonly BinaryReader _binaryReader;
     private readonly BinaryWriter _binaryWriter;
     
-    private Aes _aes;
+    private readonly DoubleRatchet _doubleRatchet;
+    private readonly AesHandler _aesHandler; 
+
 
     public IPAddress ServerIpAddress { get; }
     public int ServerPort { get; }
@@ -22,11 +21,28 @@ public class SocketServer : IDisposable
         ServerIpAddress = serverIpAddress;
         ServerPort = serverPort;
 
-        _tcpListener = new TcpListener(ServerIpAddress, ServerPort);
-        _tcpListener.Start();
+        var tcpListener = new TcpListener(ServerIpAddress, ServerPort);
+        tcpListener.Start();
 
-        _tcpClient = _tcpListener.AcceptTcpClient();
+        var tcpClient = tcpListener.AcceptTcpClient();
         
-        var networkStream = _tcpClient.GetStream();
+        _binaryReader = new BinaryReader(tcpClient.GetStream());
+        _binaryWriter = new BinaryWriter(tcpClient.GetStream());
+
+        var serverKeyPair = EcdhKeyExchange.GenerateDiffieHellmanKeyPair();
+        var clientPublicKey = ReceiveClientPublicKey();
+        
+        var sharedKey = EcdhKeyExchange.DeriveSharedKey(serverKeyPair, clientPublicKey);
+
+        _doubleRatchet = new DoubleRatchet(sharedKey);
+        _aesHandler = new AesHandler();
+    }
+
+    private byte[] ReceiveClientPublicKey()
+    {
+        var clientPublicKeyLength = _binaryReader.ReadInt32();
+        var clientPublicKey = _binaryReader.ReadBytes(clientPublicKeyLength);
+        
+        return clientPublicKey;
     }
 }
