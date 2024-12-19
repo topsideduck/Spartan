@@ -1,5 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
 using Spartan.Utils.Cryptography;
 
 namespace Spartan.Server;
@@ -8,10 +10,9 @@ public class SocketServer : IDisposable
 {
     private readonly BinaryReader _binaryReader;
     private readonly BinaryWriter _binaryWriter;
-    
-    private readonly DoubleRatchet _doubleRatchet;
-    private readonly AesHandler _aesHandler; 
 
+    private readonly DoubleRatchet _doubleRatchet;
+    private readonly AesHandler _aesHandler;
 
     public IPAddress ServerIpAddress { get; }
     public int ServerPort { get; }
@@ -25,24 +26,19 @@ public class SocketServer : IDisposable
         tcpListener.Start();
 
         var tcpClient = tcpListener.AcceptTcpClient();
-        
+
         _binaryReader = new BinaryReader(tcpClient.GetStream());
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
 
-        var serverKeyPair = EcdhKeyExchange.GenerateDiffieHellmanKeyPair();
-        var clientPublicKey = ReceiveClientPublicKey();
-        
-        var sharedKey = EcdhKeyExchange.DeriveSharedKey(serverKeyPair, clientPublicKey);
+        var sharedKey = PerformHandshake();
 
         _doubleRatchet = new DoubleRatchet(sharedKey);
         _aesHandler = new AesHandler();
     }
-
-    private byte[] ReceiveClientPublicKey()
+    
+    public void Dispose()
     {
-        var clientPublicKeyLength = _binaryReader.ReadInt32();
-        var clientPublicKey = _binaryReader.ReadBytes(clientPublicKeyLength);
-        
-        return clientPublicKey;
+        _binaryReader.Dispose();
+        _binaryWriter.Dispose();
     }
 }
