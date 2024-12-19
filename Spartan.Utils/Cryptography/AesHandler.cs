@@ -8,15 +8,10 @@ public class AesHandler
 
     public byte[] AesKey
     {
-        get => _aes.Key;
         set => _aes.Key = value;
     }
     
-    public byte[] AesIv
-    {
-        get => _aes.IV;
-        set => _aes.IV = value;
-    }
+    public byte[] AesIv => _aes.IV;
 
     public AesHandler()
     {
@@ -24,7 +19,12 @@ public class AesHandler
         _aes.Mode = CipherMode.CBC;
         _aes.Padding = PaddingMode.PKCS7;
     }
-    
+
+    public void GenerateNewIv()
+    {
+        _aes.GenerateIV();
+    }
+
     public byte[] Encrypt(byte[] data)
     {
         using var encryptor = _aes.CreateEncryptor();
