@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Spartan.Utils\Spartan.Utils.csproj" />
+    </ItemGroup>
+
 </Project>

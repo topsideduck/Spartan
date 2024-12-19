@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Server", "Spartan.Server\Spartan.Server.csproj", "{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Utils", "Spartan.Utils\Spartan.Utils.csproj", "{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
