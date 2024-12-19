@@ -49,4 +49,12 @@ public class SocketServer : IDisposable
 
         return clientPublicKey;
     }
+    
+    private void SendServerPublicKey(AsymmetricCipherKeyPair serverKeyPair)
+    {
+        var serverPublicKey = ((ECPublicKeyParameters)serverKeyPair.Public).Q.GetEncoded();
+
+        _binaryWriter.Write(serverPublicKey.Length);
+        _binaryWriter.Write(serverPublicKey);
+    }
 }
