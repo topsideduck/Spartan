@@ -4,15 +4,15 @@ namespace Spartan.Utils.Cryptography;
 
 public class DoubleRatchet
 {
-    public byte[] CurrentKey { get; private set; }
-    private byte[] chainKey;
-    private byte[] messageKey;
+    private byte[] _currentKey;
+    private byte[] _chainKey;
+    public byte[] MessageKey { get; private set; }
 
     public DoubleRatchet(byte[] initialKey)
     {
-        CurrentKey = initialKey;
-        chainKey = new byte[32];
-        messageKey = new byte[32];
+        _currentKey = initialKey;
+        _chainKey = new byte[32];
+        MessageKey = new byte[32];
         
         UpdateKeys();
     }
@@ -25,19 +25,19 @@ public class DoubleRatchet
 
         var combinedKey = new byte[64];
         Buffer.BlockCopy(dhKey, 0, combinedKey, 0, dhKey.Length);
-        Buffer.BlockCopy(chainKey, 0, combinedKey, dhKey.Length, chainKey.Length);
+        Buffer.BlockCopy(_chainKey, 0, combinedKey, dhKey.Length, _chainKey.Length);
 
         var hmac = new HMACSHA256(combinedKey);
-        chainKey = hmac.ComputeHash(chainKey);
-        messageKey = hmac.ComputeHash(chainKey);
+        _chainKey = hmac.ComputeHash(_chainKey);
+        MessageKey = hmac.ComputeHash(_chainKey);
 
-        CurrentKey = messageKey;
+        _currentKey = MessageKey;
     }
 
     private void UpdateKeys()
     {
-        var hmac = new HMACSHA256(CurrentKey);
-        chainKey = hmac.ComputeHash(chainKey);
-        messageKey = hmac.ComputeHash(chainKey);
+        var hmac = new HMACSHA256(_currentKey);
+        _chainKey = hmac.ComputeHash(_chainKey);
+        MessageKey = hmac.ComputeHash(_chainKey);
     }
 }
