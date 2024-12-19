@@ -57,4 +57,16 @@ public class SocketServer : IDisposable
         _binaryWriter.Write(serverPublicKey.Length);
         _binaryWriter.Write(serverPublicKey);
     }
+    
+    private byte[] PerformHandshake()
+    {
+        var serverKeyPair = EcdhKeyExchange.GenerateDiffieHellmanKeyPair();
+        var clientPublicKeyBytes = ReceiveClientPublicKey();
+        
+        SendServerPublicKey(serverKeyPair);
+        
+        var sharedKey = EcdhKeyExchange.DeriveSharedKey(serverKeyPair, clientPublicKeyBytes);
+
+        return sharedKey;
+    }
 }
