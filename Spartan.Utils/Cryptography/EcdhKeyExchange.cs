@@ -8,7 +8,7 @@ using Org.BouncyCastle.Security;
 
 namespace Spartan.Utils.Cryptography;
 
-public static class EchKeyExchange
+public static class EcdhKeyExchange
 {
     public static AsymmetricCipherKeyPair GenerateDiffieHellmanKeyPair()
     {
