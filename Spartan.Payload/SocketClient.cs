@@ -86,4 +86,29 @@ public class SocketClient : IDisposable
         
         return dataStream.ToArray();
     }
+    
+    public void SendData(byte[] data)
+    {
+        _doubleRatchet.Advance();
+        _aesHandler.AesKey = _doubleRatchet.MessageKey;
+
+        var buffer = new byte[8192];
+
+        using var dataStream = new MemoryStream(data);
+        
+        while (dataStream.Read(buffer, 0, buffer.Length) > 0)
+        {
+            _aesHandler.GenerateNewIv();
+            
+            _binaryWriter.Write(_aesHandler.AesIv.Length);
+            _binaryWriter.Write(_aesHandler.AesIv);
+            
+            var encryptedChunk = _aesHandler.Encrypt(buffer);
+            
+            _binaryWriter.Write(encryptedChunk.Length);
+            _binaryWriter.Write(encryptedChunk);
+        }
+
+        _binaryWriter.Write(0); // Signal end of file
+    }
 }
