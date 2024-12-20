@@ -36,6 +36,7 @@ public class SocketClient : IDisposable
     {
         _binaryReader.Dispose();
         _binaryWriter.Dispose();
+        // GC.SuppressFinalize(this);
     }
     
     private byte[] ReceiveServerPublicKey()
@@ -62,5 +63,27 @@ public class SocketClient : IDisposable
         var sharedKey = EcdhKeyExchange.DeriveSharedKey(ecdh, serverPublicKeyBytes);
 
         return sharedKey;
+    }
+    
+    public byte[] ReceiveData()
+    {
+        using var dataStream = new MemoryStream();
+        while (true)
+        {
+            var ivLength = _binaryReader.ReadInt32();
+            var iv = _binaryReader.ReadBytes(ivLength);
+
+            _aesHandler.AesIv = iv;
+            
+            var chunkSize = _binaryReader.ReadInt32();
+            if (chunkSize == 0) break;
+            
+            var encryptedChunk = _binaryReader.ReadBytes(chunkSize);
+            var decryptedChunk = _aesHandler.Decrypt(encryptedChunk);
+            
+            dataStream.Write(decryptedChunk, 0, decryptedChunk.Length);
+        }
+        
+        return dataStream.ToArray();
     }
 }
