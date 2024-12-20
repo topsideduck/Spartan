@@ -4,9 +4,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Server", "Spartan.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Utils", "Spartan.Utils\Spartan.Utils.csproj", "{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Payload", "Spartan.Payload\Spartan.Payload.csproj", "{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Stager", "Spartan.Stager\Spartan.Stager.csproj", "{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Client", "Spartan.Client\Spartan.Client.csproj", "{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{3D240802-2913-4A8C-AE84-1479F28823FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +32,9 @@ Global
 		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D240802-2913-4A8C-AE84-1479F28823FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D240802-2913-4A8C-AE84-1479F28823FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D240802-2913-4A8C-AE84-1479F28823FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D240802-2913-4A8C-AE84-1479F28823FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
