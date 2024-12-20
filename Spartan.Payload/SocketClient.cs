@@ -30,4 +30,10 @@ public class SocketClient : IDisposable
         // _doubleRatchet = new DoubleRatchet(sharedKey);
         // _aesHandler = new AesHandler();
     }
+    
+    public void Dispose()
+    {
+        _binaryReader.Dispose();
+        _binaryWriter.Dispose();
+    }
 }
