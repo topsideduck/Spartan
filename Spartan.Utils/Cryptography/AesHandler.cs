@@ -8,10 +8,15 @@ public class AesHandler
 
     public byte[] AesKey
     {
+        get => _aes.Key;
         set => _aes.Key = value;
     }
     
-    public byte[] AesIv => _aes.IV;
+    public byte[] AesIv
+    {
+        get => _aes.IV;
+        set => _aes.IV = value;
+    }
 
     public AesHandler()
     {
