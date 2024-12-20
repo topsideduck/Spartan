@@ -12,16 +12,10 @@ public class SocketClient : IDisposable
     private readonly DoubleRatchet _doubleRatchet;
     private readonly AesHandler _aesHandler;
 
-    private IPAddress _serverIpAddress;
-    private int _serverPort;
-    
     public SocketClient(string serverIpAddress, int serverPort)
     {
-        _serverIpAddress = IPAddress.Parse(serverIpAddress);
-        _serverPort = serverPort;
-
         var tcpClient = new TcpClient();
-        tcpClient.Connect(_serverIpAddress.ToString(), _serverPort);
+        tcpClient.Connect(serverIpAddress, serverPort);
 
         _binaryReader = new BinaryReader(tcpClient.GetStream());
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
