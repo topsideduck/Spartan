@@ -4,23 +4,24 @@ namespace Spartan.Utils.Cryptography;
 
 public class DoubleRatchet
 {
-    private byte[] _currentKey;
     private byte[] _chainKey;
-    public byte[] MessageKey { get; private set; }
+    private byte[] _currentKey;
 
     public DoubleRatchet(byte[] initialKey)
     {
         _currentKey = initialKey;
         _chainKey = new byte[32];
         MessageKey = new byte[32];
-        
+
         UpdateKeys();
     }
+
+    public byte[] MessageKey { get; private set; }
 
     public void Advance()
     {
         var random = new Random();
-        byte[] dhKey = new byte[32];
+        var dhKey = new byte[32];
         random.NextBytes(dhKey);
 
         var combinedKey = new byte[64];

@@ -6,23 +6,23 @@ public class AesHandler
 {
     private readonly Aes _aes;
 
-    public byte[] AesKey
-    {
-        get => _aes.Key;
-        set => _aes.Key = value;
-    }
-    
-    public byte[] AesIv
-    {
-        get => _aes.IV;
-        set => _aes.IV = value;
-    }
-
     public AesHandler()
     {
         _aes = Aes.Create();
         _aes.Mode = CipherMode.CBC;
         _aes.Padding = PaddingMode.PKCS7;
+    }
+
+    public byte[] AesKey
+    {
+        get => _aes.Key;
+        set => _aes.Key = value;
+    }
+
+    public byte[] AesIv
+    {
+        get => _aes.IV;
+        set => _aes.IV = value;
     }
 
     public void GenerateNewIv()
