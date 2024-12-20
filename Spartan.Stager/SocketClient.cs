@@ -1,7 +1,7 @@
 using System.Net.Sockets;
 using Spartan.Utils.Cryptography;
 
-namespace Spartan.Payload;
+namespace Spartan.Stager;
 
 public class SocketClient : IDisposable
 {
@@ -11,13 +11,10 @@ public class SocketClient : IDisposable
 
     private readonly DoubleRatchet _doubleRatchet;
 
-    public SocketClient(string serverIpAddress, int serverPort)
+    public SocketClient(BinaryReader binaryReader, BinaryWriter binaryWriter)
     {
-        var tcpClient = new TcpClient();
-        tcpClient.Connect(serverIpAddress, serverPort);
-
-        _binaryReader = new BinaryReader(tcpClient.GetStream());
-        _binaryWriter = new BinaryWriter(tcpClient.GetStream());
+        _binaryReader = binaryReader;
+        _binaryWriter = binaryWriter;
 
         var sharedKey = PerformHandshake();
 
