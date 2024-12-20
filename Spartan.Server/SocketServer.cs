@@ -50,22 +50,20 @@ public class SocketServer : IDisposable
         return clientPublicKey;
     }
     
-    private void SendServerPublicKey(AsymmetricCipherKeyPair serverKeyPair)
+    private void SendServerPublicKey(byte[] serverPublicKey)
     {
-        var serverPublicKey = ((ECPublicKeyParameters)serverKeyPair.Public).Q.GetEncoded();
-
         _binaryWriter.Write(serverPublicKey.Length);
         _binaryWriter.Write(serverPublicKey);
     }
     
     private byte[] PerformHandshake()
     {
-        var serverKeyPair = EcdhKeyExchange.GenerateDiffieHellmanKeyPair();
+        var (ecdh, publicKey) = EcdhKeyExchange.GenerateDiffieHellmanKeyPair();
         var clientPublicKeyBytes = ReceiveClientPublicKey();
         
-        SendServerPublicKey(serverKeyPair);
+        SendServerPublicKey(publicKey);
         
-        var sharedKey = EcdhKeyExchange.DeriveSharedKey(serverKeyPair, clientPublicKeyBytes);
+        var sharedKey = EcdhKeyExchange.DeriveSharedKey(ecdh, clientPublicKeyBytes);
 
         return sharedKey;
     }
