@@ -36,4 +36,12 @@ public class SocketClient : IDisposable
         _binaryReader.Dispose();
         _binaryWriter.Dispose();
     }
+    
+    private byte[] ReceiveServerPublicKey()
+    {
+        var serverPublicKeyLength = _binaryReader.ReadInt32();
+        var serverPublicKey = _binaryReader.ReadBytes(serverPublicKeyLength);
+
+        return serverPublicKey;
+    }
 }
