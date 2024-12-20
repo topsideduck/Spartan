@@ -40,6 +40,7 @@ public class SocketServer : IDisposable
     {
         _binaryReader.Dispose();
         _binaryWriter.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     private byte[] ReceiveClientPublicKey()
@@ -75,8 +76,8 @@ public class SocketServer : IDisposable
 
         var buffer = new byte[8192];
 
-        var dataStream = new MemoryStream(data);
-
+        using var dataStream = new MemoryStream(data);
+        
         while (dataStream.Read(buffer, 0, buffer.Length) > 0)
         {
             _aesHandler.GenerateNewIv();

@@ -36,7 +36,7 @@ public class SocketClient : IDisposable
     {
         _binaryReader.Dispose();
         _binaryWriter.Dispose();
-        // GC.SuppressFinalize(this);
+        GC.SuppressFinalize(this);
     }
     
     private byte[] ReceiveServerPublicKey()
