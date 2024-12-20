@@ -1,0 +1,33 @@
+using System.Net;
+using System.Net.Sockets;
+using Spartan.Utils.Cryptography;
+
+namespace Spartan.Payload;
+
+public class SocketClient : IDisposable
+{
+    private readonly BinaryReader _binaryReader;
+    private readonly BinaryWriter _binaryWriter;
+
+    private readonly DoubleRatchet _doubleRatchet;
+    private readonly AesHandler _aesHandler;
+
+    private IPAddress _serverIpAddress;
+    private int _serverPort;
+    
+    public SocketClient(string serverIpAddress, int serverPort)
+    {
+        _serverIpAddress = IPAddress.Parse(serverIpAddress);
+        _serverPort = serverPort;
+
+        var tcpClient = new TcpClient(_serverIpAddress.ToString(), _serverPort);
+
+        _binaryReader = new BinaryReader(tcpClient.GetStream());
+        _binaryWriter = new BinaryWriter(tcpClient.GetStream());
+
+        // var sharedKey = PerformHandshake();
+        //
+        // _doubleRatchet = new DoubleRatchet(sharedKey);
+        // _aesHandler = new AesHandler();
+    }
+}
