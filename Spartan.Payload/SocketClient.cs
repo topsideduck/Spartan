@@ -20,7 +20,8 @@ public class SocketClient : IDisposable
         _serverIpAddress = IPAddress.Parse(serverIpAddress);
         _serverPort = serverPort;
 
-        var tcpClient = new TcpClient(_serverIpAddress.ToString(), _serverPort);
+        var tcpClient = new TcpClient();
+        tcpClient.Connect(_serverIpAddress.ToString(), _serverPort);
 
         _binaryReader = new BinaryReader(tcpClient.GetStream());
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
@@ -43,5 +44,11 @@ public class SocketClient : IDisposable
         var serverPublicKey = _binaryReader.ReadBytes(serverPublicKeyLength);
 
         return serverPublicKey;
+    }
+    
+    private void SendServerPublicKey(byte[] serverPublicKey)
+    {
+        _binaryWriter.Write(serverPublicKey.Length);
+        _binaryWriter.Write(serverPublicKey);
     }
 }
