@@ -26,10 +26,10 @@ public class SocketClient : IDisposable
         _binaryReader = new BinaryReader(tcpClient.GetStream());
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
 
-        // var sharedKey = PerformHandshake();
-        //
-        // _doubleRatchet = new DoubleRatchet(sharedKey);
-        // _aesHandler = new AesHandler();
+        var sharedKey = PerformHandshake();
+        
+        _doubleRatchet = new DoubleRatchet(sharedKey);
+        _aesHandler = new AesHandler();
     }
     
     public void Dispose()
@@ -46,9 +46,21 @@ public class SocketClient : IDisposable
         return serverPublicKey;
     }
     
-    private void SendServerPublicKey(byte[] serverPublicKey)
+    private void SendClientPublicKey(byte[] serverPublicKey)
     {
         _binaryWriter.Write(serverPublicKey.Length);
         _binaryWriter.Write(serverPublicKey);
+    }
+    
+    private byte[] PerformHandshake()
+    {
+        var (ecdh, publicKey) = EcdhKeyExchange.GenerateDiffieHellmanKeyPair();
+        var serverPublicKeyBytes = ReceiveServerPublicKey();
+        
+        SendClientPublicKey(publicKey);
+        
+        var sharedKey = EcdhKeyExchange.DeriveSharedKey(ecdh, serverPublicKeyBytes);
+
+        return sharedKey;
     }
 }
