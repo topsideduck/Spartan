@@ -9,9 +9,9 @@ namespace Spartan.Server;
 
 public class SocketServer : IDisposable
 {
-    private readonly ServerRatchet _serverRatchet;
     private readonly BinaryReader _binaryReader;
     private readonly BinaryWriter _binaryWriter;
+    private readonly ServerRatchet _serverRatchet;
 
     public SocketServer(IPAddress serverIpAddress, int serverPort)
     {
@@ -29,7 +29,7 @@ public class SocketServer : IDisposable
         _serverRatchet = new ServerRatchet();
 
         PerformX3dhHandshake();
-        
+
         _serverRatchet.InitializeRatchet();
     }
 
@@ -85,7 +85,7 @@ public class SocketServer : IDisposable
     {
         var clientPublicKeysDictionary = ReceiveClientPublicKeys();
         _serverRatchet.X3dh(clientPublicKeysDictionary["IKaPublicKey"], clientPublicKeysDictionary["EKaPublicKey"]);
-        
+
         SendServerPublicKeys();
     }
 

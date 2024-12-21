@@ -7,9 +7,9 @@ namespace Spartan.Payload;
 
 public class SocketClient : IDisposable
 {
-    private readonly ClientRatchet _clientRatchet;
     private readonly BinaryReader _binaryReader;
     private readonly BinaryWriter _binaryWriter;
+    private readonly ClientRatchet _clientRatchet;
 
     public SocketClient(BinaryReader binaryReader, BinaryWriter binaryWriter)
     {
@@ -17,9 +17,9 @@ public class SocketClient : IDisposable
         _binaryWriter = binaryWriter;
 
         _clientRatchet = new ClientRatchet();
-        
+
         PerformX3dhHandshake();
-        
+
         _clientRatchet.InitializeRatchet();
     }
 

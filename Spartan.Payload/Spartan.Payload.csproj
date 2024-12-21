@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Spartan.Utils\Spartan.Utils.csproj" />
+        <ProjectReference Include="..\Spartan.Utils\Spartan.Utils.csproj"/>
     </ItemGroup>
 
 </Project>
