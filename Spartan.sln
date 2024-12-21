@@ -1,40 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Server", "Spartan.Server\Spartan.Server.csproj", "{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Utils", "Spartan.Utils\Spartan.Utils.csproj", "{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Stager", "Spartan.Stager\Spartan.Stager.csproj", "{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Client", "Spartan.Client\Spartan.Client.csproj", "{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.CLI", "Spartan.CLI\Spartan.CLI.csproj", "{86EE755C-B273-4C27-903E-67C60D2A3948}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5EB45FB6-CE25-45D7-A352-DCCE4CB7AD68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC9C79DD-640C-4F11-BB5B-0E81A45E68CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCE5002F-4AF7-4E6B-8447-06B25A52E73B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4DDEC5D4-526F-477D-A012-F6A8E0115DDB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86EE755C-B273-4C27-903E-67C60D2A3948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86EE755C-B273-4C27-903E-67C60D2A3948}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86EE755C-B273-4C27-903E-67C60D2A3948}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86EE755C-B273-4C27-903E-67C60D2A3948}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
