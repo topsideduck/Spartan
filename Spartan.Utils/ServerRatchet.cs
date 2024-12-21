@@ -28,7 +28,7 @@ public class ServerRatchet
     public byte[] OPKbPublicKey => _opkb.PublicKey.ExportSubjectPublicKeyInfo();
     public byte[] DhRatchetPublicKey => _dhRatchet.PublicKey.ExportSubjectPublicKeyInfo();
 
-    public static byte[] Hkdf(byte[] input, int length)
+    private static byte[] Hkdf(byte[] input, int length)
     {
         // Use HKDF to derive a key
         return HKDF.DeriveKey(HashAlgorithmName.SHA256, input, length);
@@ -81,31 +81,15 @@ public class ServerRatchet
         _sendRatchet = new SymmetricRatchet(sharedSend);
     }
 
-    public byte[] Encrypt(byte[] rawData)
+    public (byte[], byte[]) SendRotate()
     {
-        var (key, iv) = _sendRatchet.Next();
-
-        using var aes = Aes.Create();
-        aes.Key = key;
-        aes.IV = iv;
-
-        var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-        var encrypted = encryptor.TransformFinalBlock(rawData, 0, rawData.Length);
-
-        return encrypted;
+        return _sendRatchet.Next();
     }
 
-    public byte[] Decrypt(byte[] encryptedData, byte[] dhRatchetPublicKeyBytes)
+    public (byte[], byte[]) ReceiveRotate(byte[] dhRatchetPublicKeyBytes)
     {
         DhRatchet(dhRatchetPublicKeyBytes);
-        var (key, iv) = _receiveRatchet.Next();
-
-        using var aes = Aes.Create();
-        aes.Key = key;
-        aes.IV = iv;
-
-        using var decryptor = aes.CreateDecryptor();
-        var decrypted = decryptor.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
-        return decrypted;
+        // var (key, iv) = _receiveRatchet.Next();
+        return _receiveRatchet.Next();
     }
 }
