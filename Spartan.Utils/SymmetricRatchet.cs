@@ -3,16 +3,11 @@ using System.Security.Cryptography;
 
 namespace Spartan.Utils;
 
-public class SymmetricRatchet
+public class SymmetricRatchet(byte[] key)
 {
-    private byte[] _state;
+    private byte[] _state = key;
 
-    public SymmetricRatchet(byte[] key)
-    {
-        _state = key;
-    }
-
-    public static byte[] Hkdf(byte[] input, int length)
+    private static byte[] Hkdf(byte[] input, int length)
     {
         // Use HKDF to derive a key
         return HKDF.DeriveKey(HashAlgorithmName.SHA256, input, length);
