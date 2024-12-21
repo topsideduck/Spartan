@@ -5,20 +5,15 @@ namespace Spartan.Utils;
 public class ServerRatchet
 {
     private readonly ECDiffieHellman _ikb;
-    private readonly ECDiffieHellman _spkb;
     private readonly ECDiffieHellman _opkb;
+    private readonly ECDiffieHellman _spkb;
     private ECDiffieHellman _dhRatchet;
+    private SymmetricRatchet _receiveRatchet;
 
     private SymmetricRatchet _rootRatchet;
     private SymmetricRatchet _sendRatchet;
-    private SymmetricRatchet _receiveRatchet;
 
     private byte[] _sharedKey;
-
-    public byte[] IKbPublicKey => _ikb.PublicKey.ExportSubjectPublicKeyInfo();
-    public byte[] SPKbPublicKey => _spkb.PublicKey.ExportSubjectPublicKeyInfo();
-    public byte[] OPKbPublicKey => _opkb.PublicKey.ExportSubjectPublicKeyInfo();
-    public byte[] DhRatchetPublicKey => _dhRatchet.PublicKey.ExportSubjectPublicKeyInfo();
 
     public ServerRatchet()
     {
@@ -27,6 +22,11 @@ public class ServerRatchet
         _opkb = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
         _dhRatchet = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
     }
+
+    public byte[] IKbPublicKey => _ikb.PublicKey.ExportSubjectPublicKeyInfo();
+    public byte[] SPKbPublicKey => _spkb.PublicKey.ExportSubjectPublicKeyInfo();
+    public byte[] OPKbPublicKey => _opkb.PublicKey.ExportSubjectPublicKeyInfo();
+    public byte[] DhRatchetPublicKey => _dhRatchet.PublicKey.ExportSubjectPublicKeyInfo();
 
     public static byte[] Hkdf(byte[] input, int length)
     {
