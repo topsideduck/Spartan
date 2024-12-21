@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.Swift;
 using System.Security.Cryptography;
 
 namespace Spartan.Utils;
@@ -10,6 +9,10 @@ public class ClientRatchet
 
     public byte[] IKaPublicKey => _ika.PublicKey.ExportSubjectPublicKeyInfo();
     public byte[] EKaPublicKey => _eka.PublicKey.ExportSubjectPublicKeyInfo();
+
+    private SymmetricRatchet _rootRatchet;
+    public SymmetricRatchet SendRatchet;
+    public SymmetricRatchet ReceiveRatchet;
 
     public byte[] SharedKey { get; private set; }
 
@@ -23,6 +26,13 @@ public class ClientRatchet
     {
         // Use HKDF to derive a key
         return HKDF.DeriveKey(HashAlgorithmName.SHA256, input, length);
+    }
+
+    public void InitializeRatchet()
+    {
+        _rootRatchet = new SymmetricRatchet(SharedKey);
+        ReceiveRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
+        SendRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
     }
 
     public void X3dh(byte[] otherSPKbBytes, byte[] otherIKbBytes, byte[] otherOPKbBytes)
