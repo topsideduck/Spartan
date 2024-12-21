@@ -1,4 +1,3 @@
-using System.Net.Sockets;
 using Spartan.Utils.Cryptography;
 
 namespace Spartan.Stager;
