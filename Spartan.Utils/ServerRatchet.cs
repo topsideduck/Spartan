@@ -12,6 +12,10 @@ public class ServerRatchet
     public byte[] SPKbPublicKey => _spkb.PublicKey.ExportSubjectPublicKeyInfo();
     public byte[] OPKbPublicKey => _opkb.PublicKey.ExportSubjectPublicKeyInfo();
 
+    private SymmetricRatchet _rootRatchet;
+    public SymmetricRatchet SendRatchet;
+    public SymmetricRatchet ReceiveRatchet;
+
     public byte[] SharedKey { get; private set; }
 
     public ServerRatchet()
@@ -25,6 +29,13 @@ public class ServerRatchet
     {
         // Use HKDF to derive a key
         return HKDF.DeriveKey(HashAlgorithmName.SHA256, input, length);
+    }
+
+    public void InitializeRatchet()
+    {
+        _rootRatchet = new SymmetricRatchet(SharedKey);
+        SendRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
+        ReceiveRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
     }
 
     public void X3dh(byte[] otherIKaBytes, byte[] otherEKaBytes)
