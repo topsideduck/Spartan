@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Spartan.Utils;
 
@@ -7,14 +8,16 @@ public class ServerRatchet
     private readonly ECDiffieHellman _ikb;
     private readonly ECDiffieHellman _spkb;
     private readonly ECDiffieHellman _opkb;
+    private ECDiffieHellman _dhRatchet;
+
+    private SymmetricRatchet _rootRatchet;
+    private SymmetricRatchet _sendRatchet;
+    private SymmetricRatchet _receiveRatchet;
 
     public byte[] IKbPublicKey => _ikb.PublicKey.ExportSubjectPublicKeyInfo();
     public byte[] SPKbPublicKey => _spkb.PublicKey.ExportSubjectPublicKeyInfo();
     public byte[] OPKbPublicKey => _opkb.PublicKey.ExportSubjectPublicKeyInfo();
-
-    private SymmetricRatchet _rootRatchet;
-    public SymmetricRatchet SendRatchet;
-    public SymmetricRatchet ReceiveRatchet;
+    public byte[] DhRatchetPublicKey => _dhRatchet.PublicKey.ExportSubjectPublicKeyInfo();
 
     public byte[] SharedKey { get; private set; }
 
@@ -23,6 +26,7 @@ public class ServerRatchet
         _ikb = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
         _spkb = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
         _opkb = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
+        _dhRatchet = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
     }
 
     public static byte[] Hkdf(byte[] input, int length)
@@ -34,8 +38,8 @@ public class ServerRatchet
     public void InitializeRatchet()
     {
         _rootRatchet = new SymmetricRatchet(SharedKey);
-        SendRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
-        ReceiveRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
+        _sendRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
+        _receiveRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
     }
 
     public void X3dh(byte[] otherIKaBytes, byte[] otherEKaBytes)
@@ -58,5 +62,23 @@ public class ServerRatchet
         Buffer.BlockCopy(dh4, 0, combined, dh1.Length + dh2.Length + dh3.Length, dh4.Length);
 
         SharedKey = Hkdf(combined, 32);
+    }
+
+    public void DhRatchet(byte[] dhRatchetPublicKeyBytes)
+    {
+        using var dhRatchetPublicKey = ECDiffieHellman.Create();
+        dhRatchetPublicKey.ImportSubjectPublicKeyInfo(dhRatchetPublicKeyBytes, out _);
+
+        var dhReceive = _dhRatchet.DeriveKeyMaterial(dhRatchetPublicKey.PublicKey);
+        var sharedReceive = _rootRatchet.Next(dhReceive).Item1;
+
+        _receiveRatchet = new SymmetricRatchet(sharedReceive);
+
+        _dhRatchet = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
+
+        var dhSend = _dhRatchet.DeriveKeyMaterial(dhRatchetPublicKey.PublicKey);
+        var sharedSend = _rootRatchet.Next(dhSend).Item1;
+
+        _sendRatchet = new SymmetricRatchet(sharedSend);
     }
 }
