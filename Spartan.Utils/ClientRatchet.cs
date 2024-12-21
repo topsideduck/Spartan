@@ -1,5 +1,4 @@
 using System.Security.Cryptography;
-using System.Text;
 
 namespace Spartan.Utils;
 
@@ -13,11 +12,11 @@ public class ClientRatchet
     private SymmetricRatchet _sendRatchet;
     private SymmetricRatchet _receiveRatchet;
 
+    private byte[] _sharedKey;
+
     public byte[] IKaPublicKey => _ika.PublicKey.ExportSubjectPublicKeyInfo();
     public byte[] EKaPublicKey => _eka.PublicKey.ExportSubjectPublicKeyInfo();
-    public byte[] DhRatchetPublicKey => _dhRatchet?.PublicKey.ExportSubjectPublicKeyInfo() ?? new byte[0];
-
-    public byte[] SharedKey { get; private set; }
+    public byte[] DhRatchetPublicKey => _dhRatchet?.PublicKey.ExportSubjectPublicKeyInfo() ?? [];
 
     public ClientRatchet()
     {
@@ -25,7 +24,7 @@ public class ClientRatchet
         _eka = ECDiffieHellman.Create(ECCurve.NamedCurves.nistP256);
     }
 
-    public static byte[] Hkdf(byte[] input, int length)
+    private static byte[] Hkdf(byte[] input, int length)
     {
         // Use HKDF to derive a key
         return HKDF.DeriveKey(HashAlgorithmName.SHA256, input, length);
@@ -33,7 +32,7 @@ public class ClientRatchet
 
     public void InitializeRatchet()
     {
-        _rootRatchet = new SymmetricRatchet(SharedKey);
+        _rootRatchet = new SymmetricRatchet(_sharedKey);
         _receiveRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
         _sendRatchet = new SymmetricRatchet(_rootRatchet.Next().Item1);
     }
@@ -60,7 +59,7 @@ public class ClientRatchet
         Buffer.BlockCopy(dh3, 0, combined, dh1.Length + dh2.Length, dh3.Length);
         Buffer.BlockCopy(dh4, 0, combined, dh1.Length + dh2.Length + dh3.Length, dh4.Length);
 
-        SharedKey = Hkdf(combined, 32);
+        _sharedKey = Hkdf(combined, 32);
     }
 
     public void DhRatchet(byte[] dhRatchetPublicKeyBytes)
@@ -81,5 +80,33 @@ public class ClientRatchet
         var sharedSend = _rootRatchet.Next(dhSend).Item1;
 
         _sendRatchet = new SymmetricRatchet(sharedSend);
+    }
+
+    public byte[] Encrypt(byte[] rawData)
+    {
+        var (key, iv) = _sendRatchet.Next();
+
+        using var aes = Aes.Create();
+        aes.Key = key;
+        aes.IV = iv;
+
+        var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+        var encrypted = encryptor.TransformFinalBlock(rawData, 0, rawData.Length);
+
+        return encrypted;
+    }
+
+    public byte[] Decrypt(byte[] encryptedData, byte[] dhRatchetPublicKeyBytes)
+    {
+        DhRatchet(dhRatchetPublicKeyBytes);
+        var (key, iv) = _receiveRatchet.Next();
+
+        using var aes = Aes.Create();
+        aes.Key = key;
+        aes.IV = iv;
+
+        using var decryptor = aes.CreateDecryptor();
+        var decrypted = decryptor.TransformFinalBlock(encryptedData, 0, encryptedData.Length);
+        return decrypted;
     }
 }
