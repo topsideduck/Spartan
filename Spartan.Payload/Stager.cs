@@ -1,3 +1,5 @@
+using Spartan.Models;
+
 namespace Spartan.Payload;
 
 public class Stager
@@ -18,7 +20,7 @@ public class Stager
     {
         while (true)
         {
-            var message = _socketClient.ReceiveData<string>();
+            string message = _socketClient.ReceiveData();
             var response = $"You said {message}";
             _socketClient.SendData(response);
         }

@@ -20,8 +20,8 @@ public class Shell
         {
             Console.Write("> ");
             var input = Console.ReadLine();
-            socketServer.SendData(input);
-            var response = socketServer.ReceiveData<string>();
+            socketServer.SendData(input!);
+            string response = socketServer.ReceiveData();
             Console.WriteLine(response);
         }
     }

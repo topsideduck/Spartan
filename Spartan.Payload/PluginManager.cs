@@ -14,13 +14,13 @@ public class PluginManager
      * }
      */
 
-    public Assembly LoadPlugin(PluginModel pluginMetadata)
+    public (Assembly, string) LoadPlugin(PluginAssemblyModel pluginAssemlyMetadata)
         /*
          * Format of pluginMetadata:
          * {
-         *     "PluginDisplayName": "PluginDisplayName",
          *     "PluginName": "The main assembly (name) of the plugin",
-         *     "PluginEntryPoint": "The class name from the main assembly",
+         *     "PluginEntryPointClass": "The class name from the main assembly",
+         *     "PluginEntryPointMethod": "The method name from the main assembly",
          *     "AssemblyBinaries": {
          *         "AssemblyName": "Base64EncodedAssembly",
          *         "AssemblyName": "Base64EncodedAssembly",
@@ -30,18 +30,19 @@ public class PluginManager
          *
          */
     {
-        var pluginName = pluginMetadata.PluginName;
-        var pluginEntryPoint = pluginMetadata.PluginEntryPoint;
-        var assemblyBinaries = pluginMetadata.AssemblyBinaries;
+        var pluginName = pluginAssemlyMetadata.PluginName;
+        var pluginEntryPointClass = pluginAssemlyMetadata.PluginEntryPointClass;
+        var pluginEntryPointMethod = pluginAssemlyMetadata.PluginEntryPointMethod;
+        var assemblyBinaries = pluginAssemlyMetadata.AssemblyBinaries;
 
         var assemblyLoadContext = new AssemblyLoadContext(pluginName);
 
-        using var mainAssemblyStream = new MemoryStream(assemblyBinaries[pluginEntryPoint]);
+        using var mainAssemblyStream = new MemoryStream(assemblyBinaries[pluginEntryPointClass]);
         var mainAssembly = assemblyLoadContext.LoadFromStream(mainAssemblyStream);
 
         foreach (var (assemblyName, assemblyBinary) in assemblyBinaries)
         {
-            if (assemblyName == pluginEntryPoint) continue;
+            if (assemblyName == pluginEntryPointClass) continue;
 
             using var assemblyStream = new MemoryStream(assemblyBinary);
             assemblyLoadContext.LoadFromStream(assemblyStream);
@@ -49,7 +50,7 @@ public class PluginManager
 
         _loadedAssemblies.Add(pluginName, assemblyLoadContext);
 
-        return mainAssembly;
+        return (mainAssembly, pluginEntryPointMethod);
     }
 
     public void UnloadPlugin(string pluginName)

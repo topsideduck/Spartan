@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using MessagePack;
 using Spartan.Encryption;
+using Spartan.Models;
 using Spartan.Models.Payload;
 
 namespace Spartan.Server;
@@ -53,7 +54,7 @@ public class SocketServer : IDisposable
 
     private ClientPublicKeysModel ReceiveClientPublicKeys()
     {
-        var clientPublicKeys = ReceiveData<ClientPublicKeysModel>(false);
+        ClientPublicKeysModel clientPublicKeys = ReceiveData(false);
         return clientPublicKeys;
     }
 
@@ -74,7 +75,15 @@ public class SocketServer : IDisposable
     {
         var serializedData = MessagePackSerializer.Serialize(rawData);
 
-        using var dataStream = new MemoryStream(serializedData);
+        var messageWrapper = new MessageWrapperModel
+        {
+            TypeName = rawData.GetType().AssemblyQualifiedName,
+            Data = serializedData
+        };
+
+        var serializedMessage = MessagePackSerializer.Serialize(messageWrapper);
+
+        using var dataStream = new MemoryStream(serializedMessage);
         var buffer = new byte[8192];
 
         if (!encrypt)
@@ -110,7 +119,7 @@ public class SocketServer : IDisposable
         _binaryWriter.Write(0); // Signal end of file
     }
 
-    public T ReceiveData<T>(bool encrypt = true)
+    public dynamic ReceiveData(bool encrypt = true)
     {
         using var dataStream = new MemoryStream();
 
@@ -150,6 +159,12 @@ public class SocketServer : IDisposable
             }
         }
 
-        return MessagePackSerializer.Deserialize<T>(dataStream.ToArray());
+        var deserializedData = MessagePackSerializer.Deserialize<MessageWrapperModel>(dataStream.ToArray());
+        var typeName = Type.GetType(deserializedData.TypeName);
+        var data = deserializedData.Data;
+
+        return Convert.ChangeType(MessagePackSerializer.Deserialize(typeName, data), typeName);
+
+        // return MessagePackSerializer.Deserialize<T>(dataStream.ToArray());
     }
 }

@@ -2,6 +2,7 @@
 using System.Runtime.Loader;
 using MessagePack;
 using Spartan.Models.Payload;
+using Spartan.Models;
 
 namespace Spartan.Client;
 
@@ -30,8 +31,12 @@ internal class Program
         var payloadBytes = dataStream.ToArray();
 
         // deserialize the payload
-        var payload =
-            MessagePackSerializer.Deserialize<PayloadModel>(payloadBytes);
+        var data =
+            MessagePackSerializer.Deserialize<MessageWrapperModel>(payloadBytes);
+        var typeName = Type.GetType(data.TypeName);
+        var payloadData = data.Data;
+
+        var payload = Convert.ChangeType(MessagePackSerializer.Deserialize(typeName, payloadData), typeName) as PayloadModel;
 
         var payloadName = payload.PayloadName;
         var payloadEntryPoint = payload.PayloadEntryPoint;
