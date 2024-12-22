@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Utils", "Spartan.Utils\Spartan.Utils.csproj", "{05A2D78A-F688-474B-B32B-0FF4C80C32A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Encryption", "Spartan.Encryption\Spartan.Encryption.csproj", "{05A2D78A-F688-474B-B32B-0FF4C80C32A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Server", "Spartan.Server\Spartan.Server.csproj", "{C60E8790-41A4-4B3E-9785-F06D7796DF01}"
 EndProject

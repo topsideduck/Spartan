@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using MessagePack;
-using Spartan.Utils;
+using Spartan.Encryption;
 using Spartan.Models;
 
 namespace Spartan.Server;

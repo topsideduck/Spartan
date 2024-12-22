@@ -1,5 +1,5 @@
 using System.Security.Cryptography;
-using Spartan.Utils;
+using Spartan.Encryption;
 using MessagePack;
 using Spartan.Models;
 

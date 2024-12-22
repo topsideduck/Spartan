@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
 
-namespace Spartan.Utils;
+namespace Spartan.Encryption;
 
 public class SymmetricRatchet(byte[] key)
 {
