@@ -6,6 +6,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Server", "Spartan.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Payload", "Spartan.Payload\Spartan.Payload.csproj", "{71ADA85D-EBC9-4B34-B471-4D7EEF430575}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.CLI", "Spartan.CLI\Spartan.CLI.csproj", "{C15AF8D4-2AF1-4A8B-98C7-8267118942D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Client", "Spartan.Client\Spartan.Client.csproj", "{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{71ADA85D-EBC9-4B34-B471-4D7EEF430575}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71ADA85D-EBC9-4B34-B471-4D7EEF430575}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71ADA85D-EBC9-4B34-B471-4D7EEF430575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C15AF8D4-2AF1-4A8B-98C7-8267118942D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C15AF8D4-2AF1-4A8B-98C7-8267118942D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C15AF8D4-2AF1-4A8B-98C7-8267118942D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C15AF8D4-2AF1-4A8B-98C7-8267118942D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
