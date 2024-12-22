@@ -27,11 +27,6 @@ public class SocketServer : IDisposable
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
 
         _serverRatchet = new ServerRatchet();
-
-        // SendPayload(payloadPath);
-        //
-        // PerformX3dhHandshake();
-        // _serverRatchet.InitializeRatchet();
     }
 
     public IPAddress ServerIpAddress { get; }
@@ -44,36 +39,8 @@ public class SocketServer : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    // private void SendPayload(string payloadDirectory)
-    // {
-    //     var files = Directory.GetFiles(payloadDirectory, "*.dll");
-    //
-    //     Dictionary<string, string> payload = new();
-    //
-    //     // Write each file as a name-content pair
-    //     foreach (var filePath in files)
-    //     {
-    //         var fileContent = File.ReadAllBytes(filePath);
-    //         payload[Path.GetFileNameWithoutExtension(filePath)] = Convert.ToBase64String(fileContent);
-    //     }
-    //
-    //     // var serializedPayload = MessagePackSerializer.Serialize(payload);
-    //     //
-    //     // _binaryWriter.Write(serializedPayload.Length);
-    //     // _binaryWriter.Write(serializedPayload);
-    //
-    //     SendData(payload, encrypt: false);
-    // }
-
     private void SendServerPublicKeys()
     {
-        // var serverPublicKeysDictionary = new Dictionary<string, byte[]>
-        // {
-        //     { "IKbPublicKey", _serverRatchet.IKbPublicKey },
-        //     { "SPKbPublicKey", _serverRatchet.SPKbPublicKey },
-        //     { "OPKbPublicKey", _serverRatchet.OPKbPublicKey }
-        // };
-
         var serverPublicKeys = new ServerPublicKeys
         {
             IKbPublicKey = _serverRatchet.IKbPublicKey,
@@ -81,33 +48,19 @@ public class SocketServer : IDisposable
             OPKbPublicKey = _serverRatchet.OPKbPublicKey
         };
 
-        // // Serialize the dictionary
-        // var serializedServerPublicKeysDictionary = MessagePackSerializer.Serialize(serverPublicKeysDictionary);
-        //
-        // _binaryWriter.Write(serializedServerPublicKeysDictionary.Length);
-        // _binaryWriter.Write(serializedServerPublicKeysDictionary);
         SendData(serverPublicKeys, encrypt: false);
     }
 
     private ClientPublicKeys ReceiveClientPublicKeys()
     {
-        // var serializedClientPublicKeysDictionaryBytesLength = _binaryReader.ReadInt32();
-        // var serializedClientPublicKeysDictionaryBytes =
-        //     _binaryReader.ReadBytes(serializedClientPublicKeysDictionaryBytesLength);
-        //
-        // var serverClientKeysDictionary =
-        //     MessagePackSerializer.Deserialize<Dictionary<string, byte[]>>(serializedClientPublicKeysDictionaryBytes);
-        //
-        // return serverClientKeysDictionary;
-
         var clientPublicKeys = ReceiveData<ClientPublicKeys>(encrypt: false);
         return clientPublicKeys;
     }
 
     public void PerformX3dhHandshake()
     {
-        var clientPublicKeysDictionary = ReceiveClientPublicKeys();
-        _serverRatchet.X3dh(clientPublicKeysDictionary.IKaPublicKey, clientPublicKeysDictionary.EKaPublicKey);
+        var clientPublicKeys = ReceiveClientPublicKeys();
+        _serverRatchet.X3dh(clientPublicKeys.IKaPublicKey, clientPublicKeys.EKaPublicKey);
 
         SendServerPublicKeys();
     }

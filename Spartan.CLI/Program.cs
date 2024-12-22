@@ -32,27 +32,6 @@ class Program
     private static Payload GeneratePayload(string payloadDirectory)
     {
         var files = Directory.GetFiles(payloadDirectory, "*.dll");
-
-        // Dictionary<string, dynamic> payload = new();
-        // payload.Add("PayloadName", "Spartan.Payload");
-        // payload.Add("PayloadEntryPoint", "Spartan.Payload.Stager");
-        //
-        // Dictionary<string, byte[]> assemblyBinaries = new();
-        //
-        // // Write each file as a name-content pair
-        // foreach (var filePath in files)
-        // {
-        //     assemblyBinaries[Path.GetFileNameWithoutExtension(filePath)] = File.ReadAllBytes(filePath);
-        // }
-        //
-        // payload.Add("AssemblyBinaries", assemblyBinaries);
-        //
-        // // var serializedPayload = MessagePackSerializer.Serialize(payload);
-        // //
-        // // _binaryWriter.Write(serializedPayload.Length);
-        // // _binaryWriter.Write(serializedPayload);
-        //
-        // return payload;
         
         Dictionary<string, byte[]> assemblyBinaries = new();
         

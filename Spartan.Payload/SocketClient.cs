@@ -17,10 +17,6 @@ public class SocketClient : IDisposable
         _binaryWriter = binaryWriter;
 
         _clientRatchet = new ClientRatchet();
-
-        // PerformX3dhHandshake();
-
-        // _clientRatchet.InitializeRatchet();
     }
 
     public void Dispose()
@@ -32,35 +28,17 @@ public class SocketClient : IDisposable
 
     private void SendClientPublicKeys()
     {
-        // var clientPublicKeysDictionary = new Dictionary<string, byte[]>
-        // {
-        //     { "IKaPublicKey", _clientRatchet.IKaPublicKey },
-        //     { "EKaPublicKey", _clientRatchet.EKaPublicKey }
-        // };
-
         var clientPublicKeys = new ClientPublicKeys
         {
             IKaPublicKey = _clientRatchet.IKaPublicKey,
             EKaPublicKey = _clientRatchet.EKaPublicKey
         };
 
-        // // Serialize the dictionary into json
-        // var serializedClientPublicKeysDictionary = MessagePackSerializer.Serialize(clientPublicKeysDictionary);
-        //
-        // _binaryWriter.Write(serializedClientPublicKeysDictionary.Length);
-        // _binaryWriter.Write(serializedClientPublicKeysDictionary);
         SendData(clientPublicKeys, encrypt: false);
     }
 
     private ServerPublicKeys ReceiveServerPublicKeys()
     {
-        // var serializedServerPublicKeysDictionaryBytesLength = _binaryReader.ReadInt32();
-        // var serializedServerPublicKeysDictionaryBytes =
-        //     _binaryReader.ReadBytes(serializedServerPublicKeysDictionaryBytesLength);
-        //
-        // var serverPublicKeysDictionary =
-        //     MessagePackSerializer.Deserialize<Dictionary<string, byte[]>>(serializedServerPublicKeysDictionaryBytes);
-
         var serverPublicKeys = ReceiveData<ServerPublicKeys>(encrypt: false);
 
         return serverPublicKeys;
@@ -70,9 +48,9 @@ public class SocketClient : IDisposable
     {
         SendClientPublicKeys();
 
-        var serverPublicKeysDictionary = ReceiveServerPublicKeys();
-        _clientRatchet.X3dh(serverPublicKeysDictionary.SPKbPublicKey, serverPublicKeysDictionary.IKbPublicKey,
-            serverPublicKeysDictionary.OPKbPublicKey);
+        var serverPublicKeys = ReceiveServerPublicKeys();
+        _clientRatchet.X3dh(serverPublicKeys.SPKbPublicKey, serverPublicKeys.IKbPublicKey,
+            serverPublicKeys.OPKbPublicKey);
     }
 
     public void InitializeRatchet()

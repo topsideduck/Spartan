@@ -1,5 +1,3 @@
-using System.Runtime.Loader;
-
 namespace Spartan.Payload;
 
 public class Stager
@@ -15,11 +13,6 @@ public class Stager
         _socketClient.PerformX3dhHandshake();
         _socketClient.InitializeRatchet();
     }
-
-    // private Dictionary<dynamic, dynamic> GetCommandDictionary()
-    // {
-    //     var commandDictionary = new Dictionary<dynamic, dynamic>();
-    // }
 
     public void Run()
     {
