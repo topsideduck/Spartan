@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
-using System.Text;
-using System.Text.Json;
 using Spartan.Utils;
+using MessagePack;
+using Spartan.Models;
 
 namespace Spartan.Payload;
 
@@ -18,9 +18,9 @@ public class SocketClient : IDisposable
 
         _clientRatchet = new ClientRatchet();
 
-        PerformX3dhHandshake();
+        // PerformX3dhHandshake();
 
-        _clientRatchet.InitializeRatchet();
+        // _clientRatchet.InitializeRatchet();
     }
 
     public void Dispose()
@@ -32,102 +32,134 @@ public class SocketClient : IDisposable
 
     private void SendClientPublicKeys()
     {
-        var clientPublicKeysDictionary = new Dictionary<string, byte[]>
+        // var clientPublicKeysDictionary = new Dictionary<string, byte[]>
+        // {
+        //     { "IKaPublicKey", _clientRatchet.IKaPublicKey },
+        //     { "EKaPublicKey", _clientRatchet.EKaPublicKey }
+        // };
+
+        var clientPublicKeys = new ClientPublicKeys
         {
-            { "IKaPublicKey", _clientRatchet.IKaPublicKey },
-            { "EKaPublicKey", _clientRatchet.EKaPublicKey }
+            IKaPublicKey = _clientRatchet.IKaPublicKey,
+            EKaPublicKey = _clientRatchet.EKaPublicKey
         };
 
-        // Serialize the dictionary into json
-        var serializedClientPublicKeysDictionary = JsonSerializer.Serialize(clientPublicKeysDictionary);
-
-        // convert to byte array
-        var serializedClientPublicKeysDictionaryBytes = Encoding.UTF8.GetBytes(serializedClientPublicKeysDictionary);
-
-        // send the length of the json
-        _binaryWriter.Write(serializedClientPublicKeysDictionaryBytes.Length);
-
-        // send the json
-        _binaryWriter.Write(serializedClientPublicKeysDictionaryBytes);
+        // // Serialize the dictionary into json
+        // var serializedClientPublicKeysDictionary = MessagePackSerializer.Serialize(clientPublicKeysDictionary);
+        //
+        // _binaryWriter.Write(serializedClientPublicKeysDictionary.Length);
+        // _binaryWriter.Write(serializedClientPublicKeysDictionary);
+        SendData(clientPublicKeys, encrypt: false);
     }
 
-    private Dictionary<string, byte[]>? ReceiveServerPublicKeys()
+    private ServerPublicKeys ReceiveServerPublicKeys()
     {
-        var serializedServerPublicKeysDictionaryBytesLength = _binaryReader.ReadInt32();
-        var serializedServerPublicKeysDictionaryBytes =
-            _binaryReader.ReadBytes(serializedServerPublicKeysDictionaryBytesLength);
+        // var serializedServerPublicKeysDictionaryBytesLength = _binaryReader.ReadInt32();
+        // var serializedServerPublicKeysDictionaryBytes =
+        //     _binaryReader.ReadBytes(serializedServerPublicKeysDictionaryBytesLength);
+        //
+        // var serverPublicKeysDictionary =
+        //     MessagePackSerializer.Deserialize<Dictionary<string, byte[]>>(serializedServerPublicKeysDictionaryBytes);
 
-        // convert to json
-        var serializedServerPublicKeysDictionary = Encoding.UTF8.GetString(serializedServerPublicKeysDictionaryBytes);
+        var serverPublicKeys = ReceiveData<ServerPublicKeys>(encrypt: false);
 
-        // deserialize the json
-        var serverPublicKeysDictionary =
-            JsonSerializer.Deserialize<Dictionary<string, byte[]>>(serializedServerPublicKeysDictionary);
-
-        return serverPublicKeysDictionary;
+        return serverPublicKeys;
     }
 
-    private void PerformX3dhHandshake()
+    public void PerformX3dhHandshake()
     {
         SendClientPublicKeys();
 
         var serverPublicKeysDictionary = ReceiveServerPublicKeys();
-        _clientRatchet.X3dh(serverPublicKeysDictionary["SPKbPublicKey"], serverPublicKeysDictionary["IKbPublicKey"],
-            serverPublicKeysDictionary["OPKbPublicKey"]);
+        _clientRatchet.X3dh(serverPublicKeysDictionary.SPKbPublicKey, serverPublicKeysDictionary.IKbPublicKey,
+            serverPublicKeysDictionary.OPKbPublicKey);
     }
 
-    public void SendData(byte[] rawData)
+    public void InitializeRatchet()
     {
-        var (key, iv) = _clientRatchet.SendRotate();
+        _clientRatchet.InitializeRatchet();
+    }
 
-        using var aes = Aes.Create();
-        aes.Key = key;
-        aes.IV = iv;
+    public void SendData(object rawData, bool encrypt = true)
+    {
+        byte[] serializedData = MessagePackSerializer.Serialize(rawData);
 
-        _binaryWriter.Write(_clientRatchet.DhRatchetPublicKey.Length);
-        _binaryWriter.Write(_clientRatchet.DhRatchetPublicKey);
-
-        using var encryptor = aes.CreateEncryptor();
-        using var dataStream = new MemoryStream(rawData);
-
+        using var dataStream = new MemoryStream(serializedData);
         var buffer = new byte[8192];
 
-        while (dataStream.Read(buffer, 0, buffer.Length) > 0)
+        if (!encrypt)
         {
-            var encryptedChunk = encryptor.TransformFinalBlock(buffer, 0, buffer.Length);
+            while (dataStream.Read(buffer, 0, buffer.Length) > 0)
+            {
+                _binaryWriter.Write(buffer.Length);
+                _binaryWriter.Write(buffer);
+            }
+        }
+        else
+        {
+            var (key, iv) = _clientRatchet.SendRotate();
 
-            _binaryWriter.Write(encryptedChunk.Length);
-            _binaryWriter.Write(encryptedChunk);
+            using var aes = Aes.Create();
+            aes.Key = key;
+            aes.IV = iv;
+
+            _binaryWriter.Write(_clientRatchet.DhRatchetPublicKey.Length);
+            _binaryWriter.Write(_clientRatchet.DhRatchetPublicKey);
+
+            using var encryptor = aes.CreateEncryptor();
+
+            while (dataStream.Read(buffer, 0, buffer.Length) > 0)
+            {
+                var encryptedChunk = encryptor.TransformFinalBlock(buffer, 0, buffer.Length);
+
+                _binaryWriter.Write(encryptedChunk.Length);
+                _binaryWriter.Write(encryptedChunk);
+            }
         }
 
         _binaryWriter.Write(0); // Signal end of file
     }
 
-    public byte[] ReceiveData()
+    public T ReceiveData<T>(bool encrypt = true)
     {
-        var dhRatchetPublicKeyLength = _binaryReader.ReadInt32();
-        var dhRatchetPublicKeyBytes = _binaryReader.ReadBytes(dhRatchetPublicKeyLength);
-
-        var (key, iv) = _clientRatchet.ReceiveRotate(dhRatchetPublicKeyBytes);
-
-        using var aes = Aes.Create();
-        aes.Key = key;
-        aes.IV = iv;
-
-        using var decryptor = aes.CreateDecryptor();
         using var dataStream = new MemoryStream();
 
-        while (true)
+        if (!encrypt)
         {
-            var chunkSize = _binaryReader.ReadInt32();
-            if (chunkSize == 0) break; // End of file
+            while (true)
+            {
+                var chunkSize = _binaryReader.ReadInt32();
+                if (chunkSize == 0) break; // End of file
 
-            var encryptedChunk = _binaryReader.ReadBytes(chunkSize);
-            var decryptedChunk = decryptor.TransformFinalBlock(encryptedChunk, 0, encryptedChunk.Length);
+                var chunk = _binaryReader.ReadBytes(chunkSize);
+                dataStream.Write(chunk, 0, chunk.Length);
+            }
+        }
+        else
+        {
+            var dhRatchetPublicKeyLength = _binaryReader.ReadInt32();
+            var dhRatchetPublicKeyBytes = _binaryReader.ReadBytes(dhRatchetPublicKeyLength);
 
-            dataStream.Write(decryptedChunk, 0, decryptedChunk.Length);
+            var (key, iv) = _clientRatchet.ReceiveRotate(dhRatchetPublicKeyBytes);
+
+            using var aes = Aes.Create();
+            aes.Key = key;
+            aes.IV = iv;
+
+            using var decryptor = aes.CreateDecryptor();
+
+            while (true)
+            {
+                var chunkSize = _binaryReader.ReadInt32();
+                if (chunkSize == 0) break; // End of file
+
+                var encryptedChunk = _binaryReader.ReadBytes(chunkSize);
+                var decryptedChunk = decryptor.TransformFinalBlock(encryptedChunk, 0, encryptedChunk.Length);
+
+                dataStream.Write(decryptedChunk, 0, decryptedChunk.Length);
+            }
         }
 
-        return dataStream.ToArray();
+        return MessagePackSerializer.Deserialize<T>(dataStream.ToArray());
     }
 }
