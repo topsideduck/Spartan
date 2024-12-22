@@ -31,12 +31,24 @@ internal class Program
         var payloadBytes = dataStream.ToArray();
 
         // deserialize the payload
-        var data =
-            MessagePackSerializer.Deserialize<MessageWrapperModel>(payloadBytes);
-        var typeName = Type.GetType(data.TypeName);
-        var payloadData = data.Data;
+        // var data =
+        //     MessagePackSerializer.Deserialize<Schema>(payloadBytes);
+        // var typeName = Type.GetType(data.TypeName);
+        // var payloadData = data.Data;
+        //
+        // var payload = Convert.ChangeType(MessagePackSerializer.Deserialize(typeName, payloadData), typeName) as PayloadModel;
+        
+        var wrapper = MessagePackSerializer.Deserialize<SchemaWrapper>(payloadBytes);
 
-        var payload = Convert.ChangeType(MessagePackSerializer.Deserialize(typeName, payloadData), typeName) as PayloadModel;
+        // Resolve the type
+        var type = Type.GetType(wrapper.Schema.TypeName);
+        if (type == null)
+        {
+            throw new InvalidOperationException($"Unable to resolve type: {wrapper.Schema.TypeName}");
+        }
+
+        // Deserialize the data into the resolved type
+        var payload= MessagePackSerializer.Deserialize(type, wrapper.Data) as PayloadModel;
 
         var payloadName = payload.PayloadName;
         var payloadEntryPoint = payload.PayloadEntryPoint;
