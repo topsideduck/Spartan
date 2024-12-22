@@ -28,7 +28,7 @@ public class SocketClient : IDisposable
 
     private void SendClientPublicKeys()
     {
-        var clientPublicKeys = new ClientPublicKeys
+        var clientPublicKeys = new ClientPublicKeysModel
         {
             IKaPublicKey = _clientRatchet.IKaPublicKey,
             EKaPublicKey = _clientRatchet.EKaPublicKey
@@ -37,9 +37,9 @@ public class SocketClient : IDisposable
         SendData(clientPublicKeys, false);
     }
 
-    private ServerPublicKeys ReceiveServerPublicKeys()
+    private ServerPublicKeysModel ReceiveServerPublicKeys()
     {
-        var serverPublicKeys = ReceiveData<ServerPublicKeys>(false);
+        var serverPublicKeys = ReceiveData<ServerPublicKeysModel>(false);
 
         return serverPublicKeys;
     }

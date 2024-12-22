@@ -41,7 +41,7 @@ public class SocketServer : IDisposable
 
     private void SendServerPublicKeys()
     {
-        var serverPublicKeys = new ServerPublicKeys
+        var serverPublicKeys = new ServerPublicKeysModel
         {
             IKbPublicKey = _serverRatchet.IKbPublicKey,
             SPKbPublicKey = _serverRatchet.SPKbPublicKey,
@@ -51,9 +51,9 @@ public class SocketServer : IDisposable
         SendData(serverPublicKeys, false);
     }
 
-    private ClientPublicKeys ReceiveClientPublicKeys()
+    private ClientPublicKeysModel ReceiveClientPublicKeys()
     {
-        var clientPublicKeys = ReceiveData<ClientPublicKeys>(false);
+        var clientPublicKeys = ReceiveData<ClientPublicKeysModel>(false);
         return clientPublicKeys;
     }
 

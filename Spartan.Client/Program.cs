@@ -31,7 +31,7 @@ internal class Program
 
         // deserialize the payload
         var payload =
-            MessagePackSerializer.Deserialize<Payload>(payloadBytes);
+            MessagePackSerializer.Deserialize<PayloadModel>(payloadBytes);
 
         var payloadName = payload.PayloadName;
         var payloadEntryPoint = payload.PayloadEntryPoint;

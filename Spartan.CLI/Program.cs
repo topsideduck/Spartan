@@ -4,12 +4,12 @@ using Spartan.Server;
 
 namespace Spartan.CLI;
 
-internal class Program
+internal static class Program
 {
     private static void Main(string[] args)
     {
         var socketServer = new SocketServer(IPAddress.Parse("127.0.0.1"), 12345);
-        var payloadDirectory = "/Users/hkeshavr/Developer/Spartan/Spartan.Payload/bin/Release/net9.0/publish";
+        const string payloadDirectory = "/Users/hkeshavr/Developer/Spartan/Spartan.Payload/bin/Release/net9.0/publish";
 
         var payload = GeneratePayload(payloadDirectory);
 
@@ -28,7 +28,7 @@ internal class Program
         }
     }
 
-    private static Payload GeneratePayload(string payloadDirectory)
+    private static PayloadModel GeneratePayload(string payloadDirectory)
     {
         var files = Directory.GetFiles(payloadDirectory, "*.dll");
 
@@ -38,7 +38,7 @@ internal class Program
         foreach (var filePath in files)
             assemblyBinaries[Path.GetFileNameWithoutExtension(filePath)] = File.ReadAllBytes(filePath);
 
-        var payload = new Payload
+        var payload = new PayloadModel
         {
             PayloadName = "Spartan.Payload",
             PayloadEntryPoint = "Spartan.Payload.Stager",

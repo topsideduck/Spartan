@@ -3,7 +3,7 @@ using MessagePack;
 namespace Spartan.Models;
 
 [MessagePackObject]
-public class ServerPublicKeys
+public class ServerPublicKeysModel
 {
     [Key("IKbPublicKey")] public required byte[] IKbPublicKey { get; set; }
     [Key("SPKbPublicKey")] public required byte[] SPKbPublicKey { get; set; }

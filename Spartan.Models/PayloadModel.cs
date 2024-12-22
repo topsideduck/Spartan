@@ -3,7 +3,7 @@ using MessagePack;
 namespace Spartan.Models;
 
 [MessagePackObject]
-public class Payload
+public class PayloadModel
 {
     [Key("PayloadName")] public required string PayloadName { get; set; }
 
