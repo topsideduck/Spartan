@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Spartan.Models\Spartan.Models.csproj" />
-        <ProjectReference Include="..\Spartan.Encryption\Spartan.Encryption.csproj" />
+        <ProjectReference Include="..\Spartan.Models\Spartan.Models.csproj"/>
+        <ProjectReference Include="..\Spartan.Encryption\Spartan.Encryption.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MessagePack" Version="3.1.0" />
+        <PackageReference Include="MessagePack" Version="3.1.0"/>
     </ItemGroup>
 
 </Project>

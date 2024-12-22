@@ -1,21 +1,20 @@
 ﻿using System.Net;
-using Spartan.Server;
 using Spartan.Models;
-
+using Spartan.Server;
 
 namespace Spartan.CLI;
 
-class Program
+internal class Program
 {
-    static void Main(string[] args)
+    private static void Main(string[] args)
     {
         var socketServer = new SocketServer(IPAddress.Parse("127.0.0.1"), 12345);
         var payloadDirectory = "/Users/hkeshavr/Developer/Spartan/Spartan.Payload/bin/Release/net9.0/publish";
-        
+
         var payload = GeneratePayload(payloadDirectory);
-        
-        socketServer.SendData(payload, encrypt: false);
-        
+
+        socketServer.SendData(payload, false);
+
         socketServer.PerformX3dhHandshake();
         socketServer.InitializeRatchet();
 
@@ -32,15 +31,13 @@ class Program
     private static Payload GeneratePayload(string payloadDirectory)
     {
         var files = Directory.GetFiles(payloadDirectory, "*.dll");
-        
+
         Dictionary<string, byte[]> assemblyBinaries = new();
-        
+
         // Write each file as a name-content pair
         foreach (var filePath in files)
-        {
             assemblyBinaries[Path.GetFileNameWithoutExtension(filePath)] = File.ReadAllBytes(filePath);
-        }
-        
+
         var payload = new Payload
         {
             PayloadName = "Spartan.Payload",

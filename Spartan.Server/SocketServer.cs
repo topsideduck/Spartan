@@ -48,12 +48,12 @@ public class SocketServer : IDisposable
             OPKbPublicKey = _serverRatchet.OPKbPublicKey
         };
 
-        SendData(serverPublicKeys, encrypt: false);
+        SendData(serverPublicKeys, false);
     }
 
     private ClientPublicKeys ReceiveClientPublicKeys()
     {
-        var clientPublicKeys = ReceiveData<ClientPublicKeys>(encrypt: false);
+        var clientPublicKeys = ReceiveData<ClientPublicKeys>(false);
         return clientPublicKeys;
     }
 
@@ -72,7 +72,7 @@ public class SocketServer : IDisposable
 
     public void SendData(object rawData, bool encrypt = true)
     {
-        byte[] serializedData = MessagePackSerializer.Serialize(rawData);
+        var serializedData = MessagePackSerializer.Serialize(rawData);
 
         using var dataStream = new MemoryStream(serializedData);
         var buffer = new byte[8192];

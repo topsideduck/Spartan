@@ -5,9 +5,9 @@ using Spartan.Models;
 
 namespace Spartan.Client;
 
-class Program
+internal class Program
 {
-    static void Main()
+    private static void Main()
     {
         var tcpClient = new TcpClient("127.0.0.1", 12345);
 
@@ -15,9 +15,9 @@ class Program
 
         var binaryReader = new BinaryReader(networkStream);
         var binaryWriter = new BinaryWriter(networkStream);
-        
+
         using var dataStream = new MemoryStream();
-        
+
         while (true)
         {
             var chunkSize = binaryReader.ReadInt32();
@@ -44,10 +44,7 @@ class Program
 
         foreach (var (assemblyName, assemblyBinary) in assemblyBinaries)
         {
-            if (assemblyName == payloadName)
-            {
-                continue;
-            }
+            if (assemblyName == payloadName) continue;
 
             using var assemblyStream = new MemoryStream(assemblyBinary);
             payloadLoadContext.LoadFromStream(assemblyStream);

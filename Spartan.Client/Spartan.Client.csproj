@@ -8,11 +8,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MessagePack" Version="3.1.0" />
+        <PackageReference Include="MessagePack" Version="3.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Spartan.Models\Spartan.Models.csproj" />
+        <ProjectReference Include="..\Spartan.Models\Spartan.Models.csproj"/>
     </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 using System.Security.Cryptography;
-using Spartan.Encryption;
 using MessagePack;
+using Spartan.Encryption;
 using Spartan.Models;
 
 namespace Spartan.Payload;
@@ -34,12 +34,12 @@ public class SocketClient : IDisposable
             EKaPublicKey = _clientRatchet.EKaPublicKey
         };
 
-        SendData(clientPublicKeys, encrypt: false);
+        SendData(clientPublicKeys, false);
     }
 
     private ServerPublicKeys ReceiveServerPublicKeys()
     {
-        var serverPublicKeys = ReceiveData<ServerPublicKeys>(encrypt: false);
+        var serverPublicKeys = ReceiveData<ServerPublicKeys>(false);
 
         return serverPublicKeys;
     }
@@ -60,7 +60,7 @@ public class SocketClient : IDisposable
 
     public void SendData(object rawData, bool encrypt = true)
     {
-        byte[] serializedData = MessagePackSerializer.Serialize(rawData);
+        var serializedData = MessagePackSerializer.Serialize(rawData);
 
         using var dataStream = new MemoryStream(serializedData);
         var buffer = new byte[8192];
