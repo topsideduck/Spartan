@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.CLI", "Spartan.CLI\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Client", "Spartan.Client\Spartan.Client.csproj", "{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Models", "Spartan.Models\Spartan.Models.csproj", "{6E74806F-61A1-47B2-B657-537BD4A67CB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5B2EB6D-D5D1-4EAE-A17E-28CDD3DC45A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
