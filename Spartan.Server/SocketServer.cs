@@ -13,7 +13,7 @@ public class SocketServer : IDisposable
     private readonly BinaryWriter _binaryWriter;
     private readonly ServerRatchet _serverRatchet;
 
-    public SocketServer(IPAddress serverIpAddress, int serverPort)
+    public SocketServer(IPAddress serverIpAddress, int serverPort, string payloadPath)
     {
         ServerIpAddress = serverIpAddress;
         ServerPort = serverPort;
@@ -27,9 +27,10 @@ public class SocketServer : IDisposable
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
 
         _serverRatchet = new ServerRatchet();
-
+        
+        SendPayload(payloadPath);
+        
         PerformX3dhHandshake();
-
         _serverRatchet.InitializeRatchet();
     }
 
@@ -41,6 +42,28 @@ public class SocketServer : IDisposable
         _binaryReader.Dispose();
         _binaryWriter.Dispose();
         GC.SuppressFinalize(this);
+    }
+
+    private void SendPayload(string payloadDirectory)
+    {
+        var files = Directory.GetFiles(payloadDirectory, "*.dll");
+
+        Dictionary<string, string> payload = new();
+
+        // Write each file as a name-content pair
+        foreach (var filePath in files)
+        {
+            var fileContent = File.ReadAllBytes(filePath);
+            payload[Path.GetFileNameWithoutExtension(filePath)] = Convert.ToBase64String(fileContent);
+        }
+        
+        var serializedPayload = JsonSerializer.Serialize(payload);
+
+        // convert to byte array
+        var serializedPayloadBytes = Encoding.UTF8.GetBytes(serializedPayload);
+
+        _binaryWriter.Write(serializedPayloadBytes.Length);
+        _binaryWriter.Write(serializedPayloadBytes);
     }
 
     private void SendServerPublicKeys()
