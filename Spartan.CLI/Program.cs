@@ -29,7 +29,7 @@ class Program
         }
     }
 
-    private static PayloadStructure GeneratePayload(string payloadDirectory)
+    private static Payload GeneratePayload(string payloadDirectory)
     {
         var files = Directory.GetFiles(payloadDirectory, "*.dll");
 
@@ -62,7 +62,7 @@ class Program
             assemblyBinaries[Path.GetFileNameWithoutExtension(filePath)] = File.ReadAllBytes(filePath);
         }
         
-        var payload = new PayloadStructure
+        var payload = new Payload
         {
             PayloadName = "Spartan.Payload",
             PayloadEntryPoint = "Spartan.Payload.Stager",
