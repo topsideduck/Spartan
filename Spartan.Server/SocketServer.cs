@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Security.Cryptography;
 using MessagePack;
 using Spartan.Encryption;
-using Spartan.Models;
+using Spartan.Models.Payload;
 
 namespace Spartan.Server;
 

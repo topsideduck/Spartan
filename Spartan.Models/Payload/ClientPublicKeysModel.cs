@@ -1,6 +1,6 @@
 using MessagePack;
 
-namespace Spartan.Models;
+namespace Spartan.Models.Payload;
 
 [MessagePackObject]
 public class ClientPublicKeysModel

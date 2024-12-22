@@ -1,50 +1,34 @@
 ﻿using System.Net;
 using Spartan.Models;
 using Spartan.Server;
+using System.CommandLine;
+
 
 namespace Spartan.CLI;
 
-internal static class Program
+class Program
 {
-    private static void Main(string[] args)
+    static async Task<int> Main(string[] args)
     {
-        var socketServer = new SocketServer(IPAddress.Parse("127.0.0.1"), 12345);
-        const string payloadDirectory = "/Users/hkeshavr/Developer/Spartan/Spartan.Payload/bin/Release/net9.0/publish";
+        var fileOption = new Option<FileInfo?>(
+            name: "--file",
+            description: "The file to read and display on the console.");
 
-        var payload = GeneratePayload(payloadDirectory);
+        var rootCommand = new RootCommand("Sample app for System.CommandLine");
+        rootCommand.AddOption(fileOption);
 
-        socketServer.SendData(payload, false);
+        rootCommand.SetHandler((file) => 
+            { 
+                ReadFile(file!); 
+            },
+            fileOption);
 
-        socketServer.PerformX3dhHandshake();
-        socketServer.InitializeRatchet();
-
-        while (true)
-        {
-            Console.Write("> ");
-            var input = Console.ReadLine();
-            socketServer.SendData(input);
-            var response = socketServer.ReceiveData<string>();
-            Console.WriteLine(response);
-        }
+        return await rootCommand.InvokeAsync(args);
     }
 
-    private static PayloadModel GeneratePayload(string payloadDirectory)
+    static void ReadFile(FileInfo file)
     {
-        var files = Directory.GetFiles(payloadDirectory, "*.dll");
-
-        Dictionary<string, byte[]> assemblyBinaries = new();
-
-        // Write each file as a name-content pair
-        foreach (var filePath in files)
-            assemblyBinaries[Path.GetFileNameWithoutExtension(filePath)] = File.ReadAllBytes(filePath);
-
-        var payload = new PayloadModel
-        {
-            PayloadName = "Spartan.Payload",
-            PayloadEntryPoint = "Spartan.Payload.Stager",
-            AssemblyBinaries = assemblyBinaries
-        };
-
-        return payload;
+        File.ReadLines(file.FullName).ToList()
+            .ForEach(line => Console.WriteLine(line));
     }
 }

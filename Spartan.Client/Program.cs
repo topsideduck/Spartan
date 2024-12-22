@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Runtime.Loader;
 using MessagePack;
-using Spartan.Models;
+using Spartan.Models.Payload;
 
 namespace Spartan.Client;
 

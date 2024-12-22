@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Runtime.Loader;
+using Spartan.Models.Plugins;
 
 namespace Spartan.Payload;
 
@@ -13,7 +14,7 @@ public class PluginManager
      * }
      */
 
-    public Assembly LoadPlugin(Dictionary<string, dynamic> pluginMetadata)
+    public Assembly LoadPlugin(PluginModel pluginMetadata)
         /*
          * Format of pluginMetadata:
          * {
@@ -29,20 +30,20 @@ public class PluginManager
          *
          */
     {
-        string pluginName = pluginMetadata["PluginName"];
-        string pluginEntryPoint = pluginMetadata["PluginEntryPoint"];
-        Dictionary<string, string> assemblyBinaries = pluginMetadata["AssemblyBinaries"];
+        var pluginName = pluginMetadata.PluginName;
+        var pluginEntryPoint = pluginMetadata.PluginEntryPoint;
+        var assemblyBinaries = pluginMetadata.AssemblyBinaries;
 
         var assemblyLoadContext = new AssemblyLoadContext(pluginName);
 
-        using var mainAssemblyStream = new MemoryStream(Convert.FromBase64String(assemblyBinaries[pluginEntryPoint]));
+        using var mainAssemblyStream = new MemoryStream(assemblyBinaries[pluginEntryPoint]);
         var mainAssembly = assemblyLoadContext.LoadFromStream(mainAssemblyStream);
 
         foreach (var (assemblyName, assemblyBinary) in assemblyBinaries)
         {
             if (assemblyName == pluginEntryPoint) continue;
 
-            using var assemblyStream = new MemoryStream(Convert.FromBase64String(assemblyBinary));
+            using var assemblyStream = new MemoryStream(assemblyBinary);
             assemblyLoadContext.LoadFromStream(assemblyStream);
         }
 
