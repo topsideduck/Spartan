@@ -24,6 +24,9 @@ public class SocketServer : IDisposable
 
         var tcpClient = tcpListener.AcceptTcpClient();
 
+        ClientIpAddress = ((IPEndPoint)tcpClient.Client.RemoteEndPoint!).Address;
+        ClientPort = ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port;
+
         _binaryReader = new BinaryReader(tcpClient.GetStream());
         _binaryWriter = new BinaryWriter(tcpClient.GetStream());
 
@@ -31,7 +34,10 @@ public class SocketServer : IDisposable
     }
 
     public IPAddress ServerIpAddress { get; }
+    public IPAddress ClientIpAddress { get; private set; }
     public int ServerPort { get; }
+    public int ClientPort { get; private set; }
+
 
     public void Dispose()
     {
