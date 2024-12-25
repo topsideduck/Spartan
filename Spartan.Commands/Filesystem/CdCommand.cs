@@ -24,6 +24,16 @@ public class CdCommand : ICommand
     {
         string newDirectory;
 
+        if (targetDirectory.StartsWith("~"))
+        {
+            var homeDirectory = GetHomeDirectory();
+
+            if (homeDirectory == null) return "Error: Unable to determine the home directory.";
+
+            // Replace ~ with the home directory path
+            targetDirectory = targetDirectory.Replace("~", homeDirectory);
+        }
+
         if (targetDirectory == "..")
         {
             var parentDirectory = Directory.GetParent(currentDirectory);
@@ -44,5 +54,14 @@ public class CdCommand : ICommand
         currentDirectory = newDirectory;
         Directory.SetCurrentDirectory(currentDirectory);
         return $"Changed directory to: {currentDirectory}";
+    }
+
+    private static string? GetHomeDirectory()
+    {
+        // Cross-platform home directory determination
+        if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+            return Environment.GetEnvironmentVariable("HOME");
+
+        return Environment.GetEnvironmentVariable("USERPROFILE");
     }
 }
