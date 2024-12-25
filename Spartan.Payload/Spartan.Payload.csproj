@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Spartan.Commands\Spartan.Commands.csproj"/>
         <ProjectReference Include="..\Spartan.Models\Spartan.Models.csproj"/>
         <ProjectReference Include="..\Spartan.Encryption\Spartan.Encryption.csproj"/>
     </ItemGroup>
