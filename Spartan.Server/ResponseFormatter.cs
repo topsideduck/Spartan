@@ -17,6 +17,7 @@ public class ResponseFormatter
         { "cd", new CdCommandResponseFormatter() },
         { "cp", new CpCommandResponseFormatter() },
         { "cpdir", new CpdirCommandResponseFormatter() },
+        { "file", new FileCommandResponseFormatter() },
         { "find", new FindCommandResponseFormatter() },
         { "ls", new LsCommandResponseFormatter() },
         { "mkdir", new MkdirCommandResponseFormatter() },

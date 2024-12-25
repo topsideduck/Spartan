@@ -17,6 +17,7 @@ public class RequestParser
         { "cd", new CdCommandRequestParser() },
         { "cp", new CpCommandRequestParser() },
         { "cpdir", new CpdirCommandRequestParser() },
+        { "file", new FileCommandRequestParser() },
         { "find", new FindCommandRequestParser() },
         { "ls", new LsCommandRequestParser() },
         { "mkdir", new MkdirCommandRequestParser() },

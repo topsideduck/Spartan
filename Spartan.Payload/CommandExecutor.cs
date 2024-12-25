@@ -18,6 +18,7 @@ public class CommandExecutor
         { "cd", new CdCommand() },
         { "cp", new CpCommand() },
         { "cpdir", new CpdirCommand() },
+        { "file", new FileCommand() },
         { "find", new FindCommand() },
         { "ls", new LsCommand() },
         { "mkdir", new MkdirCommand() },
