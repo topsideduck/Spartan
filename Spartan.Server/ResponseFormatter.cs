@@ -15,6 +15,7 @@ public class ResponseFormatter
         // Filesystem commands
         { "cat", new CatCommandResponseFormatter() },
         { "cd", new CdCommandResponseFormatter() },
+        { "checksum", new ChecksumCommandResponseFormatter() },
         { "cp", new CpCommandResponseFormatter() },
         { "cpdir", new CpdirCommandResponseFormatter() },
         { "file", new FileCommandResponseFormatter() },

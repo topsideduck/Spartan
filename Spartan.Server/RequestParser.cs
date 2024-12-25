@@ -15,6 +15,7 @@ public class RequestParser
         // Filesystem commands
         { "cat", new CatCommandRequestParser() },
         { "cd", new CdCommandRequestParser() },
+        { "checksum", new ChecksumCommandRequestParser() },
         { "cp", new CpCommandRequestParser() },
         { "cpdir", new CpdirCommandRequestParser() },
         { "file", new FileCommandRequestParser() },

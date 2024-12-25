@@ -16,6 +16,7 @@ public class CommandExecutor
         // Filesystem commands
         { "cat", new CatCommand() },
         { "cd", new CdCommand() },
+        { "checksum", new ChecksumCommand() },
         { "cp", new CpCommand() },
         { "cpdir", new CpdirCommand() },
         { "file", new FileCommand() },
