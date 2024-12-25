@@ -1,8 +1,8 @@
 ﻿using System.Net.Sockets;
 using System.Runtime.Loader;
 using MessagePack;
-using Spartan.Models.Payload;
 using Spartan.Models;
+using Spartan.Models.Payload;
 
 namespace Spartan.Client;
 
@@ -37,18 +37,18 @@ internal class Program
         // var payloadData = data.Data;
         //
         // var payload = Convert.ChangeType(MessagePackSerializer.Deserialize(typeName, payloadData), typeName) as PayloadModel;
-        
-        var wrapper = MessagePackSerializer.Deserialize<SchemaWrapper>(payloadBytes);
+
+        var wrapper = MessagePackSerializer.Deserialize<DataWrapper>(payloadBytes);
 
         // Resolve the type
-        var type = Type.GetType(wrapper.Schema.TypeName);
+        var type = Type.GetType(wrapper.TypeName);
         if (type == null)
         {
-            throw new InvalidOperationException($"Unable to resolve type: {wrapper.Schema.TypeName}");
+            throw new InvalidOperationException($"Unable to resolve type: {wrapper.TypeName}");
         }
 
         // Deserialize the data into the resolved type
-        var payload= MessagePackSerializer.Deserialize(type, wrapper.Data) as PayloadModel;
+        var payload = MessagePackSerializer.Deserialize(type, wrapper.Data) as PayloadModel;
 
         var payloadName = payload.PayloadName;
         var payloadEntryPoint = payload.PayloadEntryPoint;
