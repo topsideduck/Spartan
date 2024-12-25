@@ -12,9 +12,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Client", "Spartan.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Models", "Spartan.Models\Spartan.Models.csproj", "{6E74806F-61A1-47B2-B657-537BD4A67CB2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Spartan.Plugins", "Spartan.Plugins", "{1184ED03-F8BE-4D0B-9CAC-082E0CD19474}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Spartan.Commands", "Spartan.Commands", "{1184ED03-F8BE-4D0B-9CAC-082E0CD19474}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSystem", "Spartan.Plugins\FileSystem\FileSystem.csproj", "{68E62F9E-AF26-4882-9A7C-4F75B3035B98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spartan.Commands.EchoCommand", "Spartan.Commands\Echo\Spartan.Commands.EchoCommand\Spartan.Commands.EchoCommand.csproj", "{F5F87165-1EB3-48ED-B54C-17E918FCCE27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,12 +46,12 @@ Global
 		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E74806F-61A1-47B2-B657-537BD4A67CB2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{68E62F9E-AF26-4882-9A7C-4F75B3035B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{68E62F9E-AF26-4882-9A7C-4F75B3035B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{68E62F9E-AF26-4882-9A7C-4F75B3035B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{68E62F9E-AF26-4882-9A7C-4F75B3035B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F87165-1EB3-48ED-B54C-17E918FCCE27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F87165-1EB3-48ED-B54C-17E918FCCE27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F87165-1EB3-48ED-B54C-17E918FCCE27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F87165-1EB3-48ED-B54C-17E918FCCE27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{68E62F9E-AF26-4882-9A7C-4F75B3035B98} = {1184ED03-F8BE-4D0B-9CAC-082E0CD19474}
+		{F5F87165-1EB3-48ED-B54C-17E918FCCE27} = {1184ED03-F8BE-4D0B-9CAC-082E0CD19474}
 	EndGlobalSection
 EndGlobal
