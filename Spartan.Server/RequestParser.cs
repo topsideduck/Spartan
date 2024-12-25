@@ -18,6 +18,7 @@ public class RequestParser
         { "checksum", new ChecksumCommandRequestParser() },
         { "cp", new CpCommandRequestParser() },
         { "cpdir", new CpdirCommandRequestParser() },
+        { "download", new DownloadCommandRequestParser() },
         { "file", new FileCommandRequestParser() },
         { "find", new FindCommandRequestParser() },
         { "ls", new LsCommandRequestParser() },
@@ -26,7 +27,8 @@ public class RequestParser
         { "pwd", new PwdCommandRequestParser() },
         { "rm", new RmCommandRequestParser() },
         { "rmdir", new RmdirCommandRequestParser() },
-        { "touch", new TouchCommandRequestParser() }
+        { "touch", new TouchCommandRequestParser() },
+        { "upload", new UploadCommandRequestParser() }
     };
 
     private static IEnumerable<string> SplitCommandLine(string commandLine)

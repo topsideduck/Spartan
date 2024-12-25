@@ -18,6 +18,7 @@ public class ResponseFormatter
         { "checksum", new ChecksumCommandResponseFormatter() },
         { "cp", new CpCommandResponseFormatter() },
         { "cpdir", new CpdirCommandResponseFormatter() },
+        { "download", new DownloadCommandResponseFormatter() },
         { "file", new FileCommandResponseFormatter() },
         { "find", new FindCommandResponseFormatter() },
         { "ls", new LsCommandResponseFormatter() },
@@ -26,7 +27,8 @@ public class ResponseFormatter
         { "pwd", new PwdCommandResponseFormatter() },
         { "rm", new RmCommandResponseFormatter() },
         { "rmdir", new RmdirCommandResponseFormatter() },
-        { "touch", new TouchCommandResponseFormatter() }
+        { "touch", new TouchCommandResponseFormatter() },
+        { "upload", new UploadCommandResponseFormatter() }
     };
 
     private IResponseFormatter GetFormatter(string command)
