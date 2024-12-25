@@ -49,8 +49,6 @@ public class DownloadCommandResponseFormatter : IResponseFormatter
 
                 // Clean up the temporary ZIP file
                 File.Delete(tempZipPath);
-
-                Console.WriteLine($"ZIP file extracted to {destinationPath}");
             }
             else
             {
@@ -60,8 +58,6 @@ public class DownloadCommandResponseFormatter : IResponseFormatter
                     foreach (var chunk in fileChunks.Where(chunk => chunk.Length > 0))
                         fileStream.Write(chunk, 0, chunk.Length);
                 }
-
-                Console.WriteLine($"File written to {destinationPath}");
             }
         }
         catch (Exception ex)
