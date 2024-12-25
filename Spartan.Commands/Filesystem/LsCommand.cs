@@ -30,19 +30,25 @@ public class LsCommand : ICommand
         }
 
         if (!Directory.Exists(directoryPath))
+        {
             return $"Error: The system cannot find the path specified: {directoryPath}";
+        }
 
         try
         {
             var directories = Directory.GetDirectories(directoryPath);
             var files = Directory.GetFiles(directoryPath);
 
+            // Sort directories and files alphabetically
+            Array.Sort(directories);
+            Array.Sort(files);
+
             var output = directories.Aggregate("Directories:\n",
                 (current, dir) => current + $"- {Path.GetFileName(dir)}\n");
 
-            output += "Files:\n";
+            output += "\nFiles:\n";
 
-            return files.Aggregate(output, (current, file) => current + $"- {Path.GetFileName(file)}\n");
+            return files.Aggregate(output, (current, file) => current + $"- {Path.GetFileName(file)}\n").Trim();
         }
         catch (Exception ex)
         {
