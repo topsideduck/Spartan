@@ -10,7 +10,8 @@ public class ResponseFormatter
     private readonly Dictionary<string, IResponseFormatter> _formatters = new()
     {
         { "echo", new EchoCommandResponseFormatter() },
-        { "cd", new CdCommandResponseFormatter() }
+        { "cd", new CdCommandResponseFormatter() },
+        { "ls", new LsCommandResponseFormatter() }
     };
 
     private IResponseFormatter GetFormatter(string command)
