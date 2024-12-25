@@ -1,10 +1,14 @@
 using System.Net;
 using Spartan.Models.Payload;
+using Spartan.Models.ResponseModels;
 
 namespace Spartan.Server;
 
 public class Shell
 {
+    private readonly RequestParser _requestParser = new();
+    private readonly ResponseFormatter _responseFormatter = new();
+
     public void ExecuteShell(IPAddress serverIpAddress, int serverPort, string payloadDirectory)
     {
         var socketServer = new SocketServer(serverIpAddress, serverPort);
@@ -20,9 +24,12 @@ public class Shell
         {
             Console.Write("> ");
             var input = Console.ReadLine();
-            socketServer.SendData(input!);
-            string response = socketServer.ReceiveData();
-            Console.WriteLine(response);
+            var parsedInput = _requestParser.Parse(input!);
+            socketServer.SendData(parsedInput);
+
+            ICommandResponseModel response = socketServer.ReceiveData();
+            var formattedResponse = _responseFormatter.Format(response);
+            Console.WriteLine(formattedResponse);
         }
     }
 
