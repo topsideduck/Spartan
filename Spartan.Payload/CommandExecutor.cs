@@ -12,8 +12,8 @@ public class CommandExecutor
     {
         { "echo", new EchoCommand() },
         { "cd", new CdCommand() },
-        { "ls", new LsCommand() }
-        // { "pwd", new PwdCommand() },
+        { "ls", new LsCommand() },
+        { "pwd", new PwdCommand() }
         // { "cat", new CatCommand() },
         // { "clear", new ClearCommand() },
         // { "exit", new ExitCommand() }
