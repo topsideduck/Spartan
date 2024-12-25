@@ -1,6 +1,7 @@
 using Spartan.Models.RequestModels;
 using Spartan.Server.RequestParsers;
 using Spartan.Server.RequestParsers.Echo;
+using Spartan.Server.RequestParsers.Filesystem;
 
 namespace Spartan.Server;
 
@@ -8,7 +9,8 @@ public class RequestParser
 {
     private readonly Dictionary<string, IRequestParser> _parsers = new()
     {
-        { "echo", new EchoCommandRequestParser() }
+        { "echo", new EchoCommandRequestParser() },
+        { "cd", new CdCommandRequestParser() }
     };
 
     private static IEnumerable<string> SplitCommandLine(string commandLine)
