@@ -7,4 +7,8 @@
         <EnableDynamicLoading>True</EnableDynamicLoading>
     </PropertyGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\Spartan.Models\Spartan.Models.csproj"/>
+    </ItemGroup>
+
 </Project>
