@@ -9,8 +9,8 @@ public class DownloadCommandRequestParser : IRequestParser
     {
         return new DownloadCommandRequestModel
         {
-            RemoteSourceDirectoryPath = arguments[0],
-            LocalDestinationDirectoryPath = arguments[1]
+            RemoteSourcePath = arguments[0],
+            LocalDestinationPath = arguments[1]
         };
     }
 }

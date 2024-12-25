@@ -9,7 +9,7 @@ public class DownloadCommandResponseFormatter : IResponseFormatter
     public string FormatResponse(ICommandResponseModel response)
     {
         var downloadResponse = (DownloadCommandResponseModel)response;
-        WriteOrExtractFile(downloadResponse.FileContents, downloadResponse.LocalDestinationDirectoryPath,
+        WriteOrExtractFile(downloadResponse.FileContents, downloadResponse.LocalDestinationPath,
             downloadResponse.IsDirectory);
 
         return downloadResponse.Output;

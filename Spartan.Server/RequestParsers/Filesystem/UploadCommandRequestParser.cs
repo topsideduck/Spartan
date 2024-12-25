@@ -12,8 +12,8 @@ public class UploadCommandRequestParser : IRequestParser
 
         return new UploadCommandRequestModel
         {
-            LocalSourceDirectoryPath = arguments[0],
-            RemoteDestinationDirectoryPath = arguments[1],
+            LocalSourcePath = arguments[0],
+            RemoteDestinationPath = arguments[1],
             IsDirectory = readData.Item1,
             FileContents = readData.Item2
         };
