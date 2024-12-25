@@ -19,6 +19,7 @@ public class CommandExecutor
         { "checksum", new ChecksumCommand() },
         { "cp", new CpCommand() },
         { "cpdir", new CpdirCommand() },
+        { "download", new DownloadCommand() },
         { "file", new FileCommand() },
         { "find", new FindCommand() },
         { "ls", new LsCommand() },
@@ -27,7 +28,8 @@ public class CommandExecutor
         { "pwd", new PwdCommand() },
         { "rm", new RmCommand() },
         { "rmdir", new RmdirCommand() },
-        { "touch", new TouchCommand() }
+        { "touch", new TouchCommand() },
+        { "upload", new UploadCommand() }
     };
 
     private ICommand GetCommand(string command)
