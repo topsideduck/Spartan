@@ -7,7 +7,7 @@ public class LsCommandResponseFormatter : IResponseFormatter
 {
     public string FormatResponse(ICommandResponseModel response)
     {
-        var echoResponse = (LsCommandResponseModel)response;
-        return echoResponse.Output;
+        var lsResponse = (LsCommandResponseModel)response;
+        return lsResponse.Output;
     }
 }

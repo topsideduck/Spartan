@@ -7,7 +7,7 @@ public class CdCommandResponseFormatter : IResponseFormatter
 {
     public string FormatResponse(ICommandResponseModel response)
     {
-        var echoResponse = (CdCommandResponseModel)response;
-        return echoResponse.Output;
+        var cdResponse = (CdCommandResponseModel)response;
+        return cdResponse.Output;
     }
 }

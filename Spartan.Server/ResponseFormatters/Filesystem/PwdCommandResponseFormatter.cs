@@ -7,7 +7,7 @@ public class PwdCommandResponseFormatter : IResponseFormatter
 {
     public string FormatResponse(ICommandResponseModel response)
     {
-        var echoResponse = (PwdCommandResponseModel)response;
-        return echoResponse.Output;
+        var pwdResponse = (PwdCommandResponseModel)response;
+        return pwdResponse.Output;
     }
 }

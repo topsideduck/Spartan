@@ -7,7 +7,7 @@ public class CatCommandResponseFormatter : IResponseFormatter
 {
     public string FormatResponse(ICommandResponseModel response)
     {
-        var echoResponse = (CatCommandResponseModel)response;
-        return echoResponse.Output;
+        var catResponse = (CatCommandResponseModel)response;
+        return catResponse.Output;
     }
 }
