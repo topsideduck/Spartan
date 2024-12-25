@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Security.Cryptography;
 using MessagePack;
 using Spartan.Encryption;
@@ -60,29 +59,19 @@ public class SocketClient : IDisposable
         _clientRatchet.InitializeRatchet();
     }
 
-    private static byte[] SerializeWithSchema<T>(T obj)
+    private static byte[] Serialize<T>(T obj)
     {
         if (obj == null) throw new ArgumentNullException(nameof(obj));
 
         var type = obj.GetType();
-        var schemaInfo = new SchemaInfo
-        {
-            TypeName = type.AssemblyQualifiedName,
-            FieldSchema = new Dictionary<string, string>()
-        };
-
-        foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-        {
-            schemaInfo.FieldSchema[property.Name] = property.PropertyType.FullName;
-        }
 
         // Serialize the object
         var serializedData = MessagePackSerializer.Serialize(obj);
 
         // Create the wrapper
-        var wrapper = new SchemaWrapper
+        var wrapper = new DataWrapper
         {
-            Schema = schemaInfo,
+            TypeName = type.AssemblyQualifiedName!,
             Data = serializedData
         };
 
@@ -90,25 +79,25 @@ public class SocketClient : IDisposable
         return MessagePackSerializer.Serialize(wrapper);
     }
 
-    private static dynamic DeserializeWithSchema(byte[] serializedWrapper)
+    private static dynamic Deserialize(byte[] serializedWrapper)
     {
         // Deserialize the wrapper
-        var wrapper = MessagePackSerializer.Deserialize<SchemaWrapper>(serializedWrapper);
+        var wrapper = MessagePackSerializer.Deserialize<DataWrapper>(serializedWrapper);
 
         // Resolve the type
-        var type = Type.GetType(wrapper.Schema.TypeName);
+        var type = Type.GetType(wrapper.TypeName);
         if (type == null)
         {
-            throw new InvalidOperationException($"Unable to resolve type: {wrapper.Schema.TypeName}");
+            throw new InvalidOperationException($"Unable to resolve type: {wrapper.TypeName}");
         }
 
         // Deserialize the data into the resolved type
-        return MessagePackSerializer.Deserialize(type, wrapper.Data);
+        return MessagePackSerializer.Deserialize(type, wrapper.Data)!;
     }
 
     public void SendData(object rawData, bool encrypt = true)
     {
-        var serializedData = SerializeWithSchema(rawData);
+        var serializedData = Serialize(rawData);
 
         using var dataStream = new MemoryStream(serializedData);
         var buffer = new byte[8192];
@@ -186,6 +175,6 @@ public class SocketClient : IDisposable
             }
         }
 
-        return DeserializeWithSchema(dataStream.ToArray());
+        return Deserialize(dataStream.ToArray());
     }
 }
