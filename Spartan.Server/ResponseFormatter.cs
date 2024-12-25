@@ -1,6 +1,7 @@
 using Spartan.Models.ResponseModels;
 using Spartan.Server.ResponseFormatters;
 using Spartan.Server.ResponseFormatters.Echo;
+using Spartan.Server.ResponseFormatters.Filesystem;
 
 namespace Spartan.Server;
 
@@ -8,7 +9,8 @@ public class ResponseFormatter
 {
     private readonly Dictionary<string, IResponseFormatter> _formatters = new()
     {
-        { "echo", new EchoCommandResponseFormatter() }
+        { "echo", new EchoCommandResponseFormatter() },
+        { "cd", new CdCommandResponseFormatter() }
     };
 
     private IResponseFormatter GetFormatter(string command)
