@@ -11,7 +11,8 @@ public class RequestParser
     {
         { "echo", new EchoCommandRequestParser() },
         { "cd", new CdCommandRequestParser() },
-        { "ls", new LsCommandRequestParser() }
+        { "ls", new LsCommandRequestParser() },
+        { "pwd", new PwdCommandRequestParser() }
     };
 
     private static IEnumerable<string> SplitCommandLine(string commandLine)

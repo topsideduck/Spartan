@@ -11,7 +11,8 @@ public class ResponseFormatter
     {
         { "echo", new EchoCommandResponseFormatter() },
         { "cd", new CdCommandResponseFormatter() },
-        { "ls", new LsCommandResponseFormatter() }
+        { "ls", new LsCommandResponseFormatter() },
+        { "pwd", new PwdCommandResponseFormatter() }
     };
 
     private IResponseFormatter GetFormatter(string command)
