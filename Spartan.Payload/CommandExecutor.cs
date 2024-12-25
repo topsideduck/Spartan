@@ -10,14 +10,22 @@ public class CommandExecutor
 {
     private readonly Dictionary<string, ICommand> _commands = new()
     {
+        // Echo commands
         { "echo", new EchoCommand() },
-        { "cd", new CdCommand() },
-        { "ls", new LsCommand() },
-        { "pwd", new PwdCommand() },
+
+        // Filesystem commands
         { "cat", new CatCommand() },
+        { "cd", new CdCommand() },
+        { "cp", new CpCommand() },
+        { "cpdir", new CpdirCommand() },
+        { "find", new FindCommand() },
+        { "ls", new LsCommand() },
+        { "mkdir", new MkdirCommand() },
+        { "move", new MoveCommand() },
+        { "pwd", new PwdCommand() },
+        { "rm", new RmCommand() },
+        { "rmdir", new RmdirCommand() },
         { "touch", new TouchCommand() }
-        // { "clear", new ClearCommand() },
-        // { "exit", new ExitCommand() }
     };
 
     private ICommand GetCommand(string command)
