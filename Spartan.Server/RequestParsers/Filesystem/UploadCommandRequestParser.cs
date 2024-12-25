@@ -56,6 +56,14 @@ public class UploadCommandRequestParser : IRequestParser
 
     private static (bool, List<byte[]>) ReadPathAsByteArray(string path)
     {
+        if (path.StartsWith("~"))
+        {
+            var homeDirectory = GetHomeDirectory();
+            if (homeDirectory == null) throw new Exception("Error: Unable to determine the home directory.");
+
+            path = path.Replace("~", homeDirectory);
+        }
+
         try
         {
             if (File.Exists(path))
@@ -84,5 +92,14 @@ public class UploadCommandRequestParser : IRequestParser
         {
             throw new Exception($"Error processing the path: {ex.Message}", ex);
         }
+    }
+
+    private static string? GetHomeDirectory()
+    {
+        // Cross-platform home directory determination
+        if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+            return Environment.GetEnvironmentVariable("HOME");
+
+        return Environment.GetEnvironmentVariable("USERPROFILE");
     }
 }

@@ -17,6 +17,14 @@ public class DownloadCommandResponseFormatter : IResponseFormatter
 
     private static void WriteOrExtractFile(List<byte[]> fileChunks, string destinationPath, bool isDirectory)
     {
+        if (destinationPath.StartsWith("~"))
+        {
+            var homeDirectory = GetHomeDirectory();
+            if (homeDirectory == null) throw new Exception("Error: Unable to determine the home directory.");
+
+            destinationPath = destinationPath.Replace("~", homeDirectory);
+        }
+
         if (fileChunks == null || fileChunks.Count == 0)
             throw new ArgumentException("The fileChunks list is empty or null.");
 
@@ -60,5 +68,14 @@ public class DownloadCommandResponseFormatter : IResponseFormatter
         {
             throw new Exception($"Error processing the file: {ex.Message}", ex);
         }
+    }
+
+    private static string? GetHomeDirectory()
+    {
+        // Cross-platform home directory determination
+        if (Environment.OSVersion.Platform == PlatformID.Unix || Environment.OSVersion.Platform == PlatformID.MacOSX)
+            return Environment.GetEnvironmentVariable("HOME");
+
+        return Environment.GetEnvironmentVariable("USERPROFILE");
     }
 }
