@@ -14,7 +14,8 @@ public class CommandExecutor
         { "cd", new CdCommand() },
         { "ls", new LsCommand() },
         { "pwd", new PwdCommand() },
-        { "cat", new CatCommand() }
+        { "cat", new CatCommand() },
+        { "touch", new TouchCommand() }
         // { "clear", new ClearCommand() },
         // { "exit", new ExitCommand() }
     };

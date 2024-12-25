@@ -5,7 +5,7 @@ using Spartan.Models.ResponseModels.Filesystem;
 
 namespace Spartan.Commands.Filesystem;
 
-public class Touch : ICommand
+public class TouchCommand : ICommand
 {
     public ICommandResponseModel Execute(ICommandRequestModel requestModel)
     {
