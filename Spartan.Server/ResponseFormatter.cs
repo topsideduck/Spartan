@@ -13,7 +13,8 @@ public class ResponseFormatter
         { "cd", new CdCommandResponseFormatter() },
         { "ls", new LsCommandResponseFormatter() },
         { "pwd", new PwdCommandResponseFormatter() },
-        { "cat", new CatCommandResponseFormatter() }
+        { "cat", new CatCommandResponseFormatter() },
+        { "touch", new TouchCommandResponseFormatter() }
     };
 
     private IResponseFormatter GetFormatter(string command)

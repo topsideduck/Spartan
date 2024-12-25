@@ -13,7 +13,8 @@ public class RequestParser
         { "cd", new CdCommandRequestParser() },
         { "ls", new LsCommandRequestParser() },
         { "pwd", new PwdCommandRequestParser() },
-        { "cat", new CatCommandRequestParser() }
+        { "cat", new CatCommandRequestParser() },
+        { "touch", new TouchCommandRequestParser() }
     };
 
     private static IEnumerable<string> SplitCommandLine(string commandLine)
