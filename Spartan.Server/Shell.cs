@@ -27,6 +27,7 @@ public class Shell
 
         while (true)
         {
+            // TODO: Create exit command
             Console.Write("> ");
             var input = Console.ReadLine();
             var parsedInput = _requestParser.Parse(input!);

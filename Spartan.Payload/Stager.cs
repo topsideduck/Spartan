@@ -17,6 +17,7 @@ public class Stager
 
     public void Run()
     {
+        // TODO: handle exceptions and try reconnect on disconnect, create exit command
         while (true)
         {
             ICommandRequestModel message = _socketClient.ReceiveData();
