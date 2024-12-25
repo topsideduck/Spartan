@@ -9,11 +9,21 @@ public class RequestParser
 {
     private readonly Dictionary<string, IRequestParser> _parsers = new()
     {
+        // Echo commands
         { "echo", new EchoCommandRequestParser() },
-        { "cd", new CdCommandRequestParser() },
-        { "ls", new LsCommandRequestParser() },
-        { "pwd", new PwdCommandRequestParser() },
+
+        // Filesystem commands
         { "cat", new CatCommandRequestParser() },
+        { "cd", new CdCommandRequestParser() },
+        { "cp", new CpCommandRequestParser() },
+        { "cpdir", new CpdirCommandRequestParser() },
+        { "find", new FindCommandRequestParser() },
+        { "ls", new LsCommandRequestParser() },
+        { "mkdir", new MkdirCommandRequestParser() },
+        { "move", new MoveCommandRequestParser() },
+        { "pwd", new PwdCommandRequestParser() },
+        { "rm", new RmCommandRequestParser() },
+        { "rmdir", new RmdirCommandRequestParser() },
         { "touch", new TouchCommandRequestParser() }
     };
 

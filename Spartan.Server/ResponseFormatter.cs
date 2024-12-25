@@ -9,11 +9,21 @@ public class ResponseFormatter
 {
     private readonly Dictionary<string, IResponseFormatter> _formatters = new()
     {
+        // Echo commands
         { "echo", new EchoCommandResponseFormatter() },
-        { "cd", new CdCommandResponseFormatter() },
-        { "ls", new LsCommandResponseFormatter() },
-        { "pwd", new PwdCommandResponseFormatter() },
+
+        // Filesystem commands
         { "cat", new CatCommandResponseFormatter() },
+        { "cd", new CdCommandResponseFormatter() },
+        { "cp", new CpCommandResponseFormatter() },
+        { "cpdir", new CpdirCommandResponseFormatter() },
+        { "find", new FindCommandResponseFormatter() },
+        { "ls", new LsCommandResponseFormatter() },
+        { "mkdir", new MkdirCommandResponseFormatter() },
+        { "move", new MoveCommandResponseFormatter() },
+        { "pwd", new PwdCommandResponseFormatter() },
+        { "rm", new RmCommandResponseFormatter() },
+        { "rmdir", new RmdirCommandResponseFormatter() },
         { "touch", new TouchCommandResponseFormatter() }
     };
 
