@@ -9,7 +9,7 @@ public class TouchCommandRequestParser : IRequestParser
     {
         return new TouchCommandRequestModel
         {
-            FileName = arguments[0]
+            FilePath = arguments[0]
         };
     }
 }

@@ -14,7 +14,7 @@ public class LsCommand : ICommand
         return new LsCommandResponseModel
         {
             Command = lsRequest.Command,
-            Output = ListDirectoryContents(lsRequest.Path)
+            Output = ListDirectoryContents(lsRequest.DirectoryPath)
         };
     }
 

@@ -9,7 +9,7 @@ public class CdCommandRequestParser : IRequestParser
     {
         return new CdCommandRequestModel
         {
-            Path = arguments[0]
+            DirectoryPath = arguments[0]
         };
     }
 }

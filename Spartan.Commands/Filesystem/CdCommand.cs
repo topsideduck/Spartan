@@ -16,7 +16,7 @@ public class CdCommand : ICommand
         return new CdCommandResponseModel
         {
             Command = cdRequest.Command,
-            Output = ChangeDirectory(ref currentDirectory, cdRequest.Path)
+            Output = ChangeDirectory(ref currentDirectory, cdRequest.DirectoryPath)
         };
     }
 

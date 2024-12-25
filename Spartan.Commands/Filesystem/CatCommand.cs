@@ -16,7 +16,7 @@ public class CatCommand : ICommand
         return new CatCommandResponseModel
         {
             Command = cdRequest.Command,
-            Output = DisplayFileContents(cdRequest.FileName)
+            Output = DisplayFileContents(cdRequest.FilePath)
         };
     }
 

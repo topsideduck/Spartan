@@ -14,7 +14,7 @@ public class TouchCommand : ICommand
         return new TouchCommandResponseModel
         {
             Command = touchRequest.Command,
-            Output = TouchFile(touchRequest.FileName)
+            Output = TouchFile(touchRequest.FilePath)
         };
     }
 

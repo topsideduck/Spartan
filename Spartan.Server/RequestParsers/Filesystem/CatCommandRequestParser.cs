@@ -9,7 +9,7 @@ public class CatCommandRequestParser : IRequestParser
     {
         return new CatCommandRequestModel
         {
-            FileName = arguments[0]
+            FilePath = arguments[0]
         };
     }
 }

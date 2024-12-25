@@ -9,7 +9,7 @@ public class LsCommandRequestParser : IRequestParser
     {
         return new LsCommandRequestModel
         {
-            Path = arguments.Length == 0 ? "." : arguments[0]
+            DirectoryPath = arguments.Length == 0 ? "." : arguments[0]
         };
     }
 }
