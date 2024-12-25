@@ -11,7 +11,12 @@ public class CommandExecutor
     private readonly Dictionary<string, ICommand> _commands = new()
     {
         { "echo", new EchoCommand() },
-        { "cd", new CdCommand() }
+        { "cd", new CdCommand() },
+        { "ls", new LsCommand() }
+        // { "pwd", new PwdCommand() },
+        // { "cat", new CatCommand() },
+        // { "clear", new ClearCommand() },
+        // { "exit", new ExitCommand() }
     };
 
     private ICommand GetCommand(string command)
