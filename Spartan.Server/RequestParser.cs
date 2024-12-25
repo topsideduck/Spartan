@@ -10,7 +10,8 @@ public class RequestParser
     private readonly Dictionary<string, IRequestParser> _parsers = new()
     {
         { "echo", new EchoCommandRequestParser() },
-        { "cd", new CdCommandRequestParser() }
+        { "cd", new CdCommandRequestParser() },
+        { "ls", new LsCommandRequestParser() }
     };
 
     private static IEnumerable<string> SplitCommandLine(string commandLine)
