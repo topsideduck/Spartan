@@ -1,8 +1,5 @@
 ﻿using System.Net;
-using Spartan.Models;
 using Spartan.Server;
-using System.CommandLine;
-
 
 namespace Spartan.CLI;
 
@@ -35,6 +32,7 @@ class Program
     static void Main()
     {
         var shell = new Shell();
-        shell.ExecuteShell(IPAddress.Parse("127.0.0.1"), 12345, "/Users/hkeshavr/Developer/Spartan/Spartan.Payload/bin/Release/net9.0/publish");
+        shell.ExecuteShell(IPAddress.Parse("192.168.4.50"), 12345,
+            "/Users/hkeshavr/Developer/Spartan/Spartan.Payload/bin/Release/net9.0/publish");
     }
 }

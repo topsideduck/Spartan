@@ -10,7 +10,7 @@ internal class Program
 {
     private static void Main()
     {
-        var tcpClient = new TcpClient("127.0.0.1", 12345);
+        var tcpClient = new TcpClient("192.168.4.50", 12345);
 
         var networkStream = tcpClient.GetStream();
 
