@@ -1,6 +1,7 @@
 using Spartan.Commands;
 using Spartan.Commands.Echo;
 using Spartan.Commands.Filesystem;
+using Spartan.Commands.UI;
 using Spartan.Models.RequestModels;
 using Spartan.Models.ResponseModels;
 
@@ -29,7 +30,10 @@ public class CommandExecutor
         { "rm", new RmCommand() },
         { "rmdir", new RmdirCommand() },
         { "touch", new TouchCommand() },
-        { "upload", new UploadCommand() }
+        { "upload", new UploadCommand() },
+
+        // UI commands
+        { "screenshot", new ScreenshotCommand() }
     };
 
     private ICommand GetCommand(string command)
