@@ -2,6 +2,7 @@ using Spartan.Models.ResponseModels;
 using Spartan.Server.ResponseFormatters;
 using Spartan.Server.ResponseFormatters.Echo;
 using Spartan.Server.ResponseFormatters.Filesystem;
+using Spartan.Server.ResponseFormatters.UI;
 
 namespace Spartan.Server;
 
@@ -28,7 +29,10 @@ public class ResponseFormatter
         { "rm", new RmCommandResponseFormatter() },
         { "rmdir", new RmdirCommandResponseFormatter() },
         { "touch", new TouchCommandResponseFormatter() },
-        { "upload", new UploadCommandResponseFormatter() }
+        { "upload", new UploadCommandResponseFormatter() },
+
+        // UI commands
+        { "screenshot", new ScreenshotCommandResponseFormatter() }
     };
 
     private IResponseFormatter GetFormatter(string command)

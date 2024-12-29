@@ -2,6 +2,7 @@ using Spartan.Models.RequestModels;
 using Spartan.Server.RequestParsers;
 using Spartan.Server.RequestParsers.Echo;
 using Spartan.Server.RequestParsers.Filesystem;
+using Spartan.Server.RequestParsers.UI;
 
 namespace Spartan.Server;
 
@@ -28,7 +29,10 @@ public class RequestParser
         { "rm", new RmCommandRequestParser() },
         { "rmdir", new RmdirCommandRequestParser() },
         { "touch", new TouchCommandRequestParser() },
-        { "upload", new UploadCommandRequestParser() }
+        { "upload", new UploadCommandRequestParser() },
+
+        // UI commands
+        { "screenshot", new ScreenshotCommandRequestParser() }
     };
 
     private static IEnumerable<string> SplitCommandLine(string commandLine)
